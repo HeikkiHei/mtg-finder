@@ -134,3 +134,12 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# mongoDB files
+.mongod.lock
+.mongod.pid
+.mongodump
+.mongodump-*
+
+# MongoDB data files
+*.mongodb.js

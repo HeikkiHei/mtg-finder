@@ -2,6 +2,8 @@
 
 This is a personal project to test if I could create an app for recognizing and pricing MtG cards based on their images.
 
+Card Typing taken from https://mtgjson.com/data-models/rulings/
+
 ## Features
 
 - Image recognition of MtG cards

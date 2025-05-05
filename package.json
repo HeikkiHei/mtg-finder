@@ -1,0 +1,23 @@
+{
+  "name": "mtg-finder",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "start:frontend": "npm --prefix frontend start",
+    "start:backend": "npm --prefix backend start",
+    "start": "concurrently \"npm run start:frontend\" \"npm run start:backend\"",
+    "dev": "concurrently \"npm run start:frontend\" \"npm run dev:backend\"",
+    "dev:backend": "npm --prefix backend run dev"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@typescript-eslint/eslint-plugin": "^8.31.1",
+    "@typescript-eslint/parser": "^8.31.1",
+    "concurrently": "^9.1.2",
+    "eslint": "^9.26.0",
+    "prettier": "3.5.3"
+  }
+}

@@ -15,8 +15,8 @@ Card Typing taken from https://mtgjson.com/data-models/rulings/
     - [x] Recognized (perceptual hashing against a Scryfall image index)
     - [ ] Detect FOIL, if possible
 - [ ] **Pricing of MtG cards**
-  - [ ] Look the recognized card up on Scryfall
-  - [ ] Get the card's price in EUR (non-foil and foil)
+  - [x] Look the recognized card up on Scryfall
+  - [x] Get the card's price in EUR (non-foil and foil)
 - [ ] **Let the user choose the grade and language of each scanned card**
 - [ ] **Store all scan data in a database**
   - [ ] Image

@@ -1,7 +1,18 @@
+import { messages } from '@/i18n/messages'
 import { render, screen } from '@testing-library/react'
+import { NextIntlClientProvider } from 'next-intl'
+import type { ReactElement } from 'react'
 import Home from './page'
 
 const fetchMock = jest.fn()
+
+function renderWithIntl(ui: ReactElement) {
+  return render(
+    <NextIntlClientProvider locale="en" messages={messages.en}>
+      {ui}
+    </NextIntlClientProvider>
+  )
+}
 
 beforeEach(() => {
   ;(globalThis as { fetch: unknown }).fetch = fetchMock
@@ -11,7 +22,7 @@ beforeEach(() => {
 describe('Home', () => {
   it('renders the title and the binder upload section', async () => {
     fetchMock.mockResolvedValue({ ok: true, json: async () => [] })
-    render(<Home />)
+    renderWithIntl(<Home />)
 
     expect(await screen.findByRole('heading', { name: 'MTG Finder', level: 1 })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: /scan a binder page/i })).toBeInTheDocument()
@@ -22,7 +33,7 @@ describe('Home', () => {
       ok: true,
       json: async () => [{ id: 1, name: 'Sol Ring', type: 'Artifact', rarity: 'uncommon' }]
     })
-    render(<Home />)
+    renderWithIntl(<Home />)
 
     expect(await screen.findByText(/Sol Ring - Artifact \(uncommon\)/)).toBeInTheDocument()
     expect(fetchMock).toHaveBeenCalledWith('/api/cards')
@@ -31,7 +42,7 @@ describe('Home', () => {
   it('shows an error message when the cards request fails', async () => {
     const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
     fetchMock.mockResolvedValue({ ok: false, status: 500 })
-    render(<Home />)
+    renderWithIntl(<Home />)
 
     expect(await screen.findByRole('alert')).toHaveTextContent(/couldn.t load saved cards/i)
     errorSpy.mockRestore()

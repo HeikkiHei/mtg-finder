@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
 import { useState, type ChangeEvent } from 'react'
 
 interface CardMatch {
@@ -26,6 +27,7 @@ interface CardCrop {
 }
 
 export default function BinderUpload() {
+  const t = useTranslations('scan')
   const [file, setFile] = useState<File | null>(null)
   const [preview, setPreview] = useState<string | null>(null)
   const [cards, setCards] = useState<CardCrop[] | null>(null)
@@ -74,20 +76,24 @@ export default function BinderUpload() {
       className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm sm:p-6"
     >
       <h2 id="scan-heading" className="text-xl font-semibold">
-        Scan a binder page
+        {t('heading')}
       </h2>
       <p id="scan-help" className="mt-1 text-sm text-gray-600">
-        Upload a photo of a 9-card binder page to split it into cards.
+        {t('help')}
       </p>
 
       {/* Screen-reader status updates (errors use role=alert below). */}
       <p role="status" aria-live="polite" className="sr-only">
-        {loading ? 'Processing image…' : cards ? `Detected ${cards.length} cards.` : ''}
+        {loading
+          ? t('statusProcessing')
+          : cards
+            ? t('statusDetected', { count: cards.length })
+            : ''}
       </p>
 
       <div className="mt-4">
         <label htmlFor="binder-file" className="block text-sm font-medium text-gray-900">
-          Binder photo
+          {t('fileLabel')}
         </label>
         <input
           id="binder-file"
@@ -106,7 +112,7 @@ export default function BinderUpload() {
         aria-busy={loading}
         className="mt-4 inline-flex h-11 w-full items-center justify-center rounded-md bg-blue-600 px-5 font-semibold text-white transition-colors hover:bg-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-500 sm:w-auto"
       >
-        {loading ? 'Processing…' : 'Process'}
+        {loading ? t('processing') : t('process')}
       </button>
 
       {error && (
@@ -120,10 +126,10 @@ export default function BinderUpload() {
 
       {preview && !cards && (
         <figure className="mt-6">
-          <figcaption className="text-sm font-medium text-gray-700">Original</figcaption>
+          <figcaption className="text-sm font-medium text-gray-700">{t('original')}</figcaption>
           <img
             src={preview}
-            alt="Uploaded binder page"
+            alt={t('fileLabel')}
             className="mt-2 w-full max-w-sm rounded-lg border border-gray-200"
           />
         </figure>
@@ -131,7 +137,7 @@ export default function BinderUpload() {
 
       {cards && (
         <div className="mt-6">
-          <h3 className="text-base font-semibold">Detected cards ({cards.length})</h3>
+          <h3 className="text-base font-semibold">{t('detected', { count: cards.length })}</h3>
           <ul role="list" className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
             {cards.map(card => (
               <li
@@ -142,8 +148,8 @@ export default function BinderUpload() {
                   src={card.image}
                   alt={
                     card.match
-                      ? `Scanned card: ${card.match.name}`
-                      : `Unrecognized card ${card.index + 1}`
+                      ? t('altScanned', { name: card.match.name })
+                      : t('altUnrecognized', { index: card.index + 1 })
                   }
                   className="aspect-63/88 w-full bg-gray-100 object-contain"
                 />
@@ -153,12 +159,12 @@ export default function BinderUpload() {
                     title={
                       card.match
                         ? `${card.match.name} (${card.match.set.toUpperCase()})`
-                        : 'Unrecognized'
+                        : t('unrecognized')
                     }
                   >
                     {card.match
                       ? `${card.match.name} (${card.match.set.toUpperCase()})`
-                      : 'Unrecognized'}
+                      : t('unrecognized')}
                   </p>
                   {card.prices?.eur != null && (
                     <p className="text-xs text-gray-600">€{card.prices.eur.toFixed(2)}</p>

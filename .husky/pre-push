@@ -1,0 +1,18 @@
+# Enforce Conventional Branch names (https://conventionalbranch.org/) on push.
+
+branch="$(git symbolic-ref --short HEAD 2>/dev/null)"
+
+# Allow the long-lived base branches and detached HEAD.
+case "$branch" in
+'' | main | master | develop | HEAD) exit 0 ;;
+esac
+
+if printf '%s' "$branch" | grep -qE '^(feature|bugfix|hotfix|release|chore)/[a-z0-9._/-]+$'; then
+  exit 0
+fi
+
+echo "⛔️ Push aborted: \"$branch\" is not a Conventional Branch name." >&2
+echo "   Use <type>/<description>, e.g. feature/card-storage" >&2
+echo "   Types: feature, bugfix, hotfix, release, chore" >&2
+echo "   Description: lowercase letters, digits, and hyphens (https://conventionalbranch.org/)" >&2
+exit 1

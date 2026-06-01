@@ -77,6 +77,13 @@ export async function searchCards(
   return cards.slice(0, limit)
 }
 
+/** Fetch a single card by its Scryfall id (used for live pricing). */
+export async function getCard(id: string): Promise<ScryfallCard> {
+  const card = await getJson<ScryfallCard>(`${API_BASE}/cards/${id}`)
+  await sleep(RATE_LIMIT_MS)
+  return card
+}
+
 /** Pick the best whole-card image URL for hashing (front face for DFCs). */
 export function cardImageUrl(card: ScryfallCard): string | undefined {
   return (

@@ -6,6 +6,7 @@ import { collections } from "./db"
 import { splitBinderPage } from "./imaging/binder"
 import { recognize } from "./recognition/matcher"
 import { loadIndex, type HashEntry } from "./recognition/store"
+import { getCardPrices, type CardPrices } from "./pricing/pricing"
 
 // Load the perceptual-hash index once, on first scan, and reuse it. If the
 // index hasn't been built yet loadIndex() returns [] and recognition is
@@ -61,9 +62,26 @@ app.post(
             height: crop.height,
             image: `data:image/png;base64,${crop.buffer.toString("base64")}`,
             match,
+            prices: null as CardPrices | null,
           }
         }),
       )
+
+      // Look up EUR prices for recognized cards. Done sequentially (Scryfall
+      // is rate-limited) and memoised per request so duplicate cards on a page
+      // are fetched once. A pricing failure must not fail the whole scan.
+      const priceCache = new Map<string, CardPrices | null>()
+      for (const card of cards) {
+        if (!card.match) continue
+        const { scryfallId } = card.match
+        if (!priceCache.has(scryfallId)) {
+          priceCache.set(
+            scryfallId,
+            await getCardPrices(scryfallId).catch(() => null),
+          )
+        }
+        card.prices = priceCache.get(scryfallId) ?? null
+      }
 
       res.status(200).send({ cards })
     } catch (error) {

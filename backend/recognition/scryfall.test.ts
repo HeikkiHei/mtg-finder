@@ -69,6 +69,30 @@ describe("searchCards", () => {
   })
 })
 
+describe("getCard", () => {
+  it("fetches a single card by id", async () => {
+    fetchMock.mockResolvedValue({
+      ok: true,
+      json: async () => ({ id: "abc", name: "Sol Ring" }),
+    })
+
+    const { getCard } = await import("./scryfall")
+    const card = await getCard("abc")
+
+    expect(card.name).toBe("Sol Ring")
+    expect(fetchMock).toHaveBeenCalledWith(
+      expect.stringContaining("/cards/abc"),
+      expect.anything(),
+    )
+  })
+
+  it("throws on a non-ok response", async () => {
+    fetchMock.mockResolvedValue({ ok: false, status: 404 })
+    const { getCard } = await import("./scryfall")
+    await expect(getCard("missing")).rejects.toThrow(/404/)
+  })
+})
+
 describe("downloadImage", () => {
   it("returns the response body as a Buffer", async () => {
     const bytes = new Uint8Array([1, 2, 3, 4])

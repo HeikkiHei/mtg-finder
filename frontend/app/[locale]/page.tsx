@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
 import BinderUpload from './BinderUpload'
 
@@ -11,6 +12,7 @@ interface Card {
 }
 
 export default function Home() {
+  const t = useTranslations()
   const [cards, setCards] = useState<Card[] | null>(null)
   const [error, setError] = useState(false)
 
@@ -35,23 +37,21 @@ export default function Home() {
     <main className="mx-auto w-full max-w-3xl px-4 py-8 sm:py-12">
       <header className="mb-8">
         <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">MTG Finder</h1>
-        <p className="mt-2 text-gray-600">
-          Scan a binder page to recognize your Magic: The Gathering cards and look up their prices.
-        </p>
+        <p className="mt-2 text-gray-600">{t('app.tagline')}</p>
       </header>
 
       <BinderUpload />
 
       <section className="mt-10" aria-labelledby="saved-cards-heading">
         <h2 id="saved-cards-heading" className="text-xl font-semibold">
-          Saved cards
+          {t('saved.heading')}
         </h2>
         {error ? (
           <p
             role="alert"
             className="mt-4 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800"
           >
-            Couldn’t load saved cards. Is the backend running?
+            {t('saved.error')}
           </p>
         ) : cards ? (
           cards.length > 0 ? (
@@ -63,11 +63,11 @@ export default function Home() {
               ))}
             </ul>
           ) : (
-            <p className="mt-4 text-gray-600">No saved cards yet.</p>
+            <p className="mt-4 text-gray-600">{t('saved.empty')}</p>
           )
         ) : (
           <p className="mt-4 text-gray-600" role="status">
-            Loading…
+            {t('saved.loading')}
           </p>
         )}
       </section>

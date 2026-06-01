@@ -1,8 +1,19 @@
+import { messages } from '@/i18n/messages'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { NextIntlClientProvider } from 'next-intl'
+import type { ReactElement } from 'react'
 import BinderUpload from './BinderUpload'
 
 const fetchMock = jest.fn()
+
+function renderWithIntl(ui: ReactElement) {
+  return render(
+    <NextIntlClientProvider locale="en" messages={messages.en}>
+      {ui}
+    </NextIntlClientProvider>
+  )
+}
 
 function fileInput(container: HTMLElement) {
   return container.querySelector('input[type="file"]') as HTMLInputElement
@@ -17,19 +28,19 @@ beforeEach(() => {
 
 describe('BinderUpload', () => {
   it('renders the upload UI with Process disabled until a file is chosen', () => {
-    render(<BinderUpload />)
+    renderWithIntl(<BinderUpload />)
     expect(screen.getByRole('heading', { name: /scan a binder page/i })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /process/i })).toBeDisabled()
   })
 
   it('shows a preview and enables Process after selecting a file', async () => {
     const user = userEvent.setup()
-    const { container } = render(<BinderUpload />)
+    const { container } = renderWithIntl(<BinderUpload />)
 
     await user.upload(fileInput(container), new File(['x'], 'binder.png', { type: 'image/png' }))
 
     expect(screen.getByRole('button', { name: /process/i })).toBeEnabled()
-    expect(screen.getByAltText(/uploaded binder page/i)).toBeInTheDocument()
+    expect(screen.getByAltText(/binder photo/i)).toBeInTheDocument()
   })
 
   it('uploads the image and renders the detected card crops', async () => {
@@ -61,7 +72,7 @@ describe('BinderUpload', () => {
       })
     })
     const user = userEvent.setup()
-    const { container } = render(<BinderUpload />)
+    const { container } = renderWithIntl(<BinderUpload />)
 
     await user.upload(fileInput(container), new File(['x'], 'binder.png', { type: 'image/png' }))
     await user.click(screen.getByRole('button', { name: /process/i }))
@@ -80,7 +91,7 @@ describe('BinderUpload', () => {
   it('shows the server error message when processing fails', async () => {
     fetchMock.mockResolvedValue({ ok: false, text: async () => 'image too large' })
     const user = userEvent.setup()
-    const { container } = render(<BinderUpload />)
+    const { container } = renderWithIntl(<BinderUpload />)
 
     await user.upload(fileInput(container), new File(['x'], 'binder.png', { type: 'image/png' }))
     await user.click(screen.getByRole('button', { name: /process/i }))

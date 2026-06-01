@@ -1,0 +1,32 @@
+import type { Messages } from './en'
+
+const zh: Messages = {
+  app: {
+    tagline: '扫描一页卡册，识别你的万智牌（Magic: The Gathering）卡牌并查询价格。'
+  },
+  nav: {
+    language: '语言'
+  },
+  scan: {
+    heading: '扫描卡册页面',
+    help: '上传一张含 9 张卡牌的卡册页面照片，将其拆分为单张卡牌。',
+    fileLabel: '卡册照片',
+    process: '处理',
+    processing: '处理中…',
+    statusProcessing: '正在处理图片…',
+    statusDetected: '已识别 {count} 张卡牌。',
+    original: '原图',
+    detected: '识别到的卡牌（{count}）',
+    unrecognized: '未识别',
+    altScanned: '已扫描卡牌：{name}',
+    altUnrecognized: '未识别的卡牌 {index}'
+  },
+  saved: {
+    heading: '已保存的卡牌',
+    empty: '还没有已保存的卡牌。',
+    loading: '加载中…',
+    error: '无法加载已保存的卡牌。后端是否正在运行？'
+  }
+}
+
+export default zh

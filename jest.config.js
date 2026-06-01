@@ -6,5 +6,5 @@
  * @type {import('jest').Config}
  */
 module.exports = {
-  projects: ["<rootDir>/backend", "<rootDir>/frontend"],
+  projects: ['<rootDir>/backend', '<rootDir>/frontend']
 }

@@ -1,6 +1,6 @@
-import { computeDHash } from "./phash"
-import { cardImageUrl, downloadImage, searchCards } from "./scryfall"
-import { DEFAULT_INDEX_PATH, saveIndex, type HashEntry } from "./store"
+import { computeDHash } from './phash'
+import { cardImageUrl, downloadImage, searchCards } from './scryfall'
+import { DEFAULT_INDEX_PATH, saveIndex, type HashEntry } from './store'
 
 export interface BuildOptions {
   /** Scryfall search query, e.g. `set:dsk` or `set:dsk lang:en`. */
@@ -21,7 +21,7 @@ export interface BuildOptions {
 export async function buildIndex({
   query,
   limit = 250,
-  indexPath = DEFAULT_INDEX_PATH,
+  indexPath = DEFAULT_INDEX_PATH
 }: BuildOptions): Promise<HashEntry[]> {
   const cards = await searchCards(query, limit)
   const entries: HashEntry[] = []
@@ -40,12 +40,10 @@ export async function buildIndex({
         collectorNumber: card.collector_number,
         lang: card.lang,
         imageUrl,
-        hash,
+        hash
       })
     } catch (error) {
-      console.warn(
-        `Skipped ${card.name} (${card.set}): ${(error as Error).message}`,
-      )
+      console.warn(`Skipped ${card.name} (${card.set}): ${(error as Error).message}`)
     }
   }
 
@@ -59,17 +57,13 @@ if (require.main === module) {
   const limit = process.argv[3] ? Number(process.argv[3]) : undefined
 
   if (!query) {
-    console.error(
-      'Usage: ts-node recognition/build-index.ts "<scryfall query>" [limit]',
-    )
+    console.error('Usage: ts-node recognition/build-index.ts "<scryfall query>" [limit]')
     process.exit(1)
   }
 
   buildIndex({ query, limit })
-    .then((entries) =>
-      console.log(`Indexed ${entries.length} cards -> ${DEFAULT_INDEX_PATH}`),
-    )
-    .catch((error) => {
+    .then(entries => console.log(`Indexed ${entries.length} cards -> ${DEFAULT_INDEX_PATH}`))
+    .catch(error => {
       console.error(error)
       process.exit(1)
     })

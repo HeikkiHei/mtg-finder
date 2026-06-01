@@ -1,4 +1,4 @@
-import * as mongoDB from "mongodb"
+import * as mongoDB from 'mongodb'
 
 /**
  * MongoDB connection and collection handles. Kept separate from the Express app
@@ -13,8 +13,8 @@ export async function connectToDatabase() {
   const client: mongoDB.MongoClient = new mongoDB.MongoClient(
     DB_CONN_STRING ||
       (() => {
-        throw new Error("Environment variable DB_CONN_STRING is not defined")
-      })(),
+        throw new Error('Environment variable DB_CONN_STRING is not defined')
+      })()
   )
 
   await client.connect()
@@ -24,13 +24,13 @@ export async function connectToDatabase() {
   const cardCollection: mongoDB.Collection = db.collection(
     process.env.COLLECTION_NAME ||
       (() => {
-        throw new Error("Environment variable COLLECTION_NAME is not defined")
-      })(),
+        throw new Error('Environment variable COLLECTION_NAME is not defined')
+      })()
   )
 
   collections.cards = cardCollection
 
   console.log(
-    `Successfully connected to database: ${db.databaseName} and collection: ${cardCollection.collectionName}`,
+    `Successfully connected to database: ${db.databaseName} and collection: ${cardCollection.collectionName}`
   )
 }

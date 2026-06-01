@@ -1,5 +1,5 @@
-import { computeOrientationHashes, hammingDistance } from "./phash"
-import type { HashEntry } from "./store"
+import { computeOrientationHashes, hammingDistance } from './phash'
+import type { HashEntry } from './store'
 
 export interface RecognitionMatch {
   scryfallId: string
@@ -28,7 +28,7 @@ export const DEFAULT_MAX_DISTANCE = 12
 export async function recognize(
   image: Buffer,
   index: HashEntry[],
-  maxDistance: number = DEFAULT_MAX_DISTANCE,
+  maxDistance: number = DEFAULT_MAX_DISTANCE
 ): Promise<RecognitionMatch | null> {
   if (index.length === 0) {
     return null
@@ -60,6 +60,6 @@ export async function recognize(
     collectorNumber: best.collectorNumber,
     lang: best.lang,
     imageUrl: best.imageUrl,
-    distance: bestDistance,
+    distance: bestDistance
   }
 }

@@ -1,5 +1,5 @@
-import { promises as fs } from "fs"
-import path from "path"
+import { promises as fs } from 'fs'
+import path from 'path'
 
 /**
  * On-disk perceptual-hash index. This is derived/cacheable reference data (the
@@ -17,17 +17,15 @@ export interface HashEntry {
   hash: string
 }
 
-export const DEFAULT_INDEX_PATH = path.join(__dirname, "data", "hashes.json")
+export const DEFAULT_INDEX_PATH = path.join(__dirname, 'data', 'hashes.json')
 
 /** Load the hash index. Returns an empty array if it hasn't been built yet. */
-export async function loadIndex(
-  indexPath: string = DEFAULT_INDEX_PATH,
-): Promise<HashEntry[]> {
+export async function loadIndex(indexPath: string = DEFAULT_INDEX_PATH): Promise<HashEntry[]> {
   try {
-    const raw = await fs.readFile(indexPath, "utf8")
+    const raw = await fs.readFile(indexPath, 'utf8')
     return JSON.parse(raw) as HashEntry[]
   } catch (error) {
-    if ((error as NodeJS.ErrnoException).code === "ENOENT") {
+    if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
       return []
     }
     throw error
@@ -37,7 +35,7 @@ export async function loadIndex(
 /** Persist the hash index, creating the data directory if needed. */
 export async function saveIndex(
   entries: HashEntry[],
-  indexPath: string = DEFAULT_INDEX_PATH,
+  indexPath: string = DEFAULT_INDEX_PATH
 ): Promise<void> {
   await fs.mkdir(path.dirname(indexPath), { recursive: true })
   await fs.writeFile(indexPath, JSON.stringify(entries))

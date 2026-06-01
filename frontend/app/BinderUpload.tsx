@@ -1,8 +1,8 @@
-"use client"
+'use client'
 
-import { useState, type ChangeEvent } from "react"
+import { useState, type ChangeEvent } from 'react'
 
-const API_BASE = "http://localhost:3001"
+const API_BASE = 'http://localhost:3001'
 
 interface CardMatch {
   name: string
@@ -50,11 +50,11 @@ export default function BinderUpload() {
 
     try {
       const formData = new FormData()
-      formData.append("image", file)
+      formData.append('image', file)
 
       const response = await fetch(`${API_BASE}/api/scan/process`, {
-        method: "POST",
-        body: formData,
+        method: 'POST',
+        body: formData
       })
 
       if (!response.ok) {
@@ -64,7 +64,7 @@ export default function BinderUpload() {
       const data = await response.json()
       setCards(data.cards)
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to process image")
+      setError(err instanceof Error ? err.message : 'Failed to process image')
     } finally {
       setLoading(false)
     }
@@ -77,10 +77,10 @@ export default function BinderUpload() {
 
       <input type="file" accept="image/*" onChange={handleSelect} />
       <button onClick={handleProcess} disabled={!file || loading}>
-        {loading ? "Processing…" : "Process"}
+        {loading ? 'Processing…' : 'Process'}
       </button>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {error && <p style={{ color: 'red' }}>{error}</p>}
 
       {preview && !cards && (
         <div>
@@ -94,26 +94,24 @@ export default function BinderUpload() {
           <h3>Detected cards ({cards.length})</h3>
           <div
             style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(3, 1fr)",
+              display: 'grid',
+              gridTemplateColumns: 'repeat(3, 1fr)',
               gap: 8,
-              maxWidth: 400,
+              maxWidth: 400
             }}
           >
-            {cards.map((card) => (
+            {cards.map(card => (
               <figure key={card.index} style={{ margin: 0 }}>
                 <img
                   src={card.image}
                   alt={`Card ${card.index + 1}`}
-                  style={{ width: "100%", border: "1px solid #ccc" }}
+                  style={{ width: '100%', border: '1px solid #ccc' }}
                 />
-                <figcaption style={{ fontSize: 12, textAlign: "center" }}>
+                <figcaption style={{ fontSize: 12, textAlign: 'center' }}>
                   {card.match
                     ? `${card.match.name} (${card.match.set.toUpperCase()})`
-                    : "Unrecognized"}
-                  {card.prices?.eur != null && (
-                    <div>€{card.prices.eur.toFixed(2)}</div>
-                  )}
+                    : 'Unrecognized'}
+                  {card.prices?.eur != null && <div>€{card.prices.eur.toFixed(2)}</div>}
                 </figcaption>
               </figure>
             ))}

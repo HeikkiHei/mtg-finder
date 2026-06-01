@@ -32,7 +32,6 @@ Card Typing taken from https://mtgjson.com/data-models/rulings/
 The project is divided into two main parts:
 
 1. **Frontend**:
-
    - Built with React and TypeScript.
    - Provides a user interface for uploading images, selecting card grades and languages, and viewing results.
    - Located in the `frontend` folder.
@@ -45,13 +44,11 @@ The project is divided into two main parts:
 ## Technologies Used
 
 - **Frontend**:
-
   - React with TypeScript
   - Axios for API communication
   - TailwindCSS or Material-UI for styling
 
 - **Backend**:
-
   - Node.js with TypeScript
   - Express for API routing
   - Sharp for image processing and perceptual hashing

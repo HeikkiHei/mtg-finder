@@ -1,4 +1,4 @@
-import { Identifiers } from "./identifiers"
+import { Identifiers } from './identifiers'
 
 export type ForeignData = {
   faceName?: string

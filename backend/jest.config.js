@@ -6,20 +6,20 @@
  * @type {import('jest').Config}
  */
 module.exports = {
-  displayName: "backend",
-  testEnvironment: "node",
-  roots: ["<rootDir>"],
-  testPathIgnorePatterns: ["/node_modules/", "/dist/"],
+  displayName: 'backend',
+  testEnvironment: 'node',
+  roots: ['<rootDir>'],
+  testPathIgnorePatterns: ['/node_modules/', '/dist/'],
   transform: {
-    "^.+\\.ts$": [
-      "ts-jest",
+    '^.+\\.ts$': [
+      'ts-jest',
       {
         tsconfig: {
-          module: "commonjs",
-          moduleResolution: "node10",
-          ignoreDeprecations: "6.0",
-        },
-      },
-    ],
-  },
+          module: 'commonjs',
+          moduleResolution: 'node10',
+          ignoreDeprecations: '6.0'
+        }
+      }
+    ]
+  }
 }

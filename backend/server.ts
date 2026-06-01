@@ -1,6 +1,6 @@
-import * as dotenv from "dotenv"
-import { app } from "./app"
-import { connectToDatabase } from "./db"
+import * as dotenv from 'dotenv'
+import { app } from './app'
+import { connectToDatabase } from './db'
 
 dotenv.config() // Load environment variables at the top
 
@@ -10,9 +10,9 @@ app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`)
   connectToDatabase()
     .then(() => {
-      console.log("Connected to database")
+      console.log('Connected to database')
     })
-    .catch((err) => {
-      console.error("Failed to connect to database", err)
+    .catch(err => {
+      console.error('Failed to connect to database', err)
     })
 })

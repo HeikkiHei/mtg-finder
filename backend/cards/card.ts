@@ -1,9 +1,9 @@
-import { ForeignData } from "./foreign"
-import { Identifiers } from "./identifiers"
-import { LeadershipSkills } from "./leadership"
-import { Legalities } from "./legalities"
-import { PurchaseUrls } from "./purchases"
-import { ObjectId } from "mongodb"
+import { ObjectId } from 'mongodb'
+import { ForeignData } from './foreign'
+import { Identifiers } from './identifiers'
+import { LeadershipSkills } from './leadership'
+import { Legalities } from './legalities'
+import { PurchaseUrls } from './purchases'
 
 export default class Card {
   constructor(
@@ -49,7 +49,7 @@ export default class Card {
     public supertypes?: string[],
     public text?: string,
     public toughness?: string,
-    public types?: string[],
+    public types?: string[]
   ) {
     this.id = id
     this.name = name

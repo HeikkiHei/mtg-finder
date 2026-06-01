@@ -1,7 +1,7 @@
-"use client"
+'use client'
 
-import { useEffect, useState } from "react"
-import BinderUpload from "./BinderUpload"
+import { useEffect, useState } from 'react'
+import BinderUpload from './BinderUpload'
 
 interface Card {
   id: number
@@ -16,14 +16,14 @@ export default function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:3001/api/cards") // Use full backend URL
+        const response = await fetch('http://localhost:3001/api/cards') // Use full backend URL
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`)
         }
         const data = await response.json()
         setCards(data)
       } catch (error) {
-        console.error("Error fetching data:", error)
+        console.error('Error fetching data:', error)
       }
     }
     fetchData()
@@ -36,7 +36,7 @@ export default function Home() {
       <h2>Saved cards</h2>
       {cards ? (
         <ul>
-          {cards.map((card) => (
+          {cards.map(card => (
             <li key={card.id?.toString()}>
               {card.name} - {card.type} ({card.rarity})
             </li>

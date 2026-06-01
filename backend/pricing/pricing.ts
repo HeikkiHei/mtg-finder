@@ -1,4 +1,4 @@
-import { getCard } from "../recognition/scryfall"
+import { getCard } from '../recognition/scryfall'
 
 /**
  * Card pricing in EUR. Scryfall reports a single market price per printing for
@@ -23,6 +23,6 @@ export async function getCardPrices(scryfallId: string): Promise<CardPrices> {
   const card = await getCard(scryfallId)
   return {
     eur: parsePrice(card.prices?.eur),
-    eurFoil: parsePrice(card.prices?.eur_foil),
+    eurFoil: parsePrice(card.prices?.eur_foil)
   }
 }

@@ -1,44 +1,41 @@
-import { defineConfig } from "eslint/config"
-import typescriptEslint from "@typescript-eslint/eslint-plugin"
-import globals from "globals"
-import tsParser from "@typescript-eslint/parser"
-import path from "node:path"
-import { fileURLToPath } from "node:url"
-import js from "@eslint/js"
-import { FlatCompat } from "@eslint/eslintrc"
+import js from '@eslint/js'
+import globals from 'globals'
+import tseslint from 'typescript-eslint'
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended,
-  allConfig: js.configs.all,
-})
-
-export default defineConfig([
+// Flat config (ESLint 10). Formatting is owned by Prettier, so this only
+// carries code-quality rules: ESLint + typescript-eslint recommended.
+export default tseslint.config(
   {
-    extends: compat.extends(
-      "eslint:recommended",
-      "plugin:@typescript-eslint/recommended",
-    ),
-
-    plugins: {
-      "@typescript-eslint": typescriptEslint,
-    },
-
-    languageOptions: {
-      globals: {
-        ...globals.browser,
-        ...globals.node,
-      },
-
-      parser: tsParser,
-      ecmaVersion: 12,
-      sourceType: "module",
-    },
-
-    rules: {
-      semi: ["error", "never"],
-    },
+    ignores: [
+      '**/node_modules/**',
+      '**/.next/**',
+      '**/dist/**',
+      '**/coverage/**',
+      'backend/recognition/data/**',
+      '**/next-env.d.ts'
+    ]
   },
-])
+  js.configs.recommended,
+  ...tseslint.configs.recommended,
+  {
+    languageOptions: {
+      globals: { ...globals.node }
+    },
+    rules: {
+      // TypeScript already resolves identifiers; no-undef only causes false
+      // positives (globals, type names) under flat config.
+      'no-undef': 'off',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }
+      ]
+    }
+  },
+  {
+    // Browser globals for the Next.js frontend.
+    files: ['frontend/**/*.{ts,tsx}'],
+    languageOptions: {
+      globals: { ...globals.browser }
+    }
+  }
+)

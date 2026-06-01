@@ -1,4 +1,4 @@
-import sharp from "sharp"
+import sharp from 'sharp'
 
 /**
  * Perceptual hashing for card recognition.
@@ -21,7 +21,7 @@ export async function computeDHash(input: Buffer): Promise<string> {
 
   const { data, info } = await sharp(input)
     .greyscale()
-    .resize(width, height, { fit: "fill" })
+    .resize(width, height, { fit: 'fill' })
     .raw()
     .toBuffer({ resolveWithObject: true })
 
@@ -40,7 +40,7 @@ export async function computeDHash(input: Buffer): Promise<string> {
     }
   }
 
-  return bits.toString(16).padStart(16, "0")
+  return bits.toString(16).padStart(16, '0')
 }
 
 /**
@@ -50,9 +50,7 @@ export async function computeDHash(input: Buffer): Promise<string> {
  */
 export async function computeOrientationHashes(input: Buffer): Promise<string[]> {
   const upright = await computeDHash(input)
-  const flipped = await computeDHash(
-    await sharp(input).rotate(180).toBuffer(),
-  )
+  const flipped = await computeDHash(await sharp(input).rotate(180).toBuffer())
   return [upright, flipped]
 }
 

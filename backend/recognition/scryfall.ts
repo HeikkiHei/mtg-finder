@@ -6,8 +6,8 @@
  * Docs: https://scryfall.com/docs/api
  */
 
-const API_BASE = "https://api.scryfall.com"
-const USER_AGENT = "mtg-finder/0.1 (personal project)"
+const API_BASE = 'https://api.scryfall.com'
+const USER_AGENT = 'mtg-finder/0.1 (personal project)'
 const RATE_LIMIT_MS = 100
 
 export interface ScryfallImageUris {
@@ -43,11 +43,11 @@ interface ScryfallList {
   next_page?: string
 }
 
-const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
 async function getJson<T>(url: string): Promise<T> {
   const response = await fetch(url, {
-    headers: { "User-Agent": USER_AGENT, Accept: "application/json" },
+    headers: { 'User-Agent': USER_AGENT, Accept: 'application/json' }
   })
   if (!response.ok) {
     throw new Error(`Scryfall request failed (${response.status}): ${url}`)
@@ -59,13 +59,9 @@ async function getJson<T>(url: string): Promise<T> {
  * Run a Scryfall search and return up to `limit` cards, paginating as needed.
  * `query` uses Scryfall search syntax, e.g. `set:dsk` or `set:dsk unique:prints`.
  */
-export async function searchCards(
-  query: string,
-  limit = 250,
-): Promise<ScryfallCard[]> {
+export async function searchCards(query: string, limit = 250): Promise<ScryfallCard[]> {
   const cards: ScryfallCard[] = []
-  let url: string | undefined =
-    `${API_BASE}/cards/search?q=${encodeURIComponent(query)}`
+  let url: string | undefined = `${API_BASE}/cards/search?q=${encodeURIComponent(query)}`
 
   while (url && cards.length < limit) {
     const page: ScryfallList = await getJson<ScryfallList>(url)
@@ -96,7 +92,7 @@ export function cardImageUrl(card: ScryfallCard): string | undefined {
 
 /** Download an image as a Buffer, throttled to respect Scryfall's rate limit. */
 export async function downloadImage(url: string): Promise<Buffer> {
-  const response = await fetch(url, { headers: { "User-Agent": USER_AGENT } })
+  const response = await fetch(url, { headers: { 'User-Agent': USER_AGENT } })
   if (!response.ok) {
     throw new Error(`Image download failed (${response.status}): ${url}`)
   }

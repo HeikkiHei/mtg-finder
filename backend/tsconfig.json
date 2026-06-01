@@ -10,10 +10,14 @@
     "module": "nodenext",
     "moduleResolution": "nodenext",
 
+    /* Ambient globals: Node (Buffer/process) and Jest (describe/expect/jest).
+       Import-based types (express, supertest, …) resolve independently. */
+    "types": ["node", "jest"],
+
     /* Build output (ts-node ignores this; used by a future `tsc` build). */
     "outDir": "./dist",
     "rootDir": "./"
   },
   "include": ["**/*.ts"],
-  "exclude": ["node_modules", "dist", "**/*.test.ts", "jest.config.js"]
+  "exclude": ["node_modules", "dist"]
 }

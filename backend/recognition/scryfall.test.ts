@@ -1,4 +1,4 @@
-import { cardImageUrl, downloadImage, searchCards, type ScryfallCard } from './scryfall'
+import { cardImageUrl, downloadImage, getCard, searchCards, type ScryfallCard } from './scryfall'
 
 const fetchMock = jest.fn()
 
@@ -71,7 +71,6 @@ describe('getCard', () => {
       json: async () => ({ id: 'abc', name: 'Sol Ring' })
     })
 
-    const { getCard } = await import('./scryfall')
     const card = await getCard('abc')
 
     expect(card.name).toBe('Sol Ring')
@@ -80,7 +79,6 @@ describe('getCard', () => {
 
   it('throws on a non-ok response', async () => {
     fetchMock.mockResolvedValue({ ok: false, status: 404 })
-    const { getCard } = await import('./scryfall')
     await expect(getCard('missing')).rejects.toThrow(/404/)
   })
 })

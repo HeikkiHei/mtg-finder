@@ -6,31 +6,26 @@ Card Typing taken from https://mtgjson.com/data-models/rulings/
 
 ## Features
 
-- Image recognition of MtG cards
-  - Images come in sets of 9, from a binder page
-  - Images are a bit distorted due to plastic binder pages
-  - Images are processed to find the cards
-    - Images are cropped to the card size
-    - Images are rotated to the correct orientation
-    - Images need to be recognized, something like google reverse image search
-    - If possible, recognize FOIL
-- Pricing of MtG cards
-  - Based on the image, get the name, and search for it from Cardmarket
-  - Get the price of the card
-  - Get the price of the card in different conditions
-    - Return all gradings
-    - Return all conditions
-    - Return all languages
-  - Return all prices in EUR
-- Let the user choose, which grade and language each scanned card is.
-- Store all the data in a database
-  - Store the image
-  - Store the name
-  - Store the price
-  - Store the condition
-  - Store the language
-  - Store the date of the scan
-  - Store the date of the last update
+- [ ] **Image recognition of MtG cards**
+  - _Images come in sets of 9, from a binder page._
+  - _Images are a bit distorted due to plastic binder pages._
+  - Images are processed to find the cards:
+    - [x] Cropped to individual card size
+    - [ ] Rotated to the correct orientation
+    - [x] Recognized (perceptual hashing against a Scryfall image index)
+    - [ ] Detect FOIL, if possible
+- [ ] **Pricing of MtG cards**
+  - [ ] Look the recognized card up on Scryfall
+  - [ ] Get the card's price in EUR (non-foil and foil)
+- [ ] **Let the user choose the grade and language of each scanned card**
+- [ ] **Store all scan data in a database**
+  - [ ] Image
+  - [ ] Name
+  - [ ] Price
+  - [ ] Condition / grade
+  - [ ] Language
+  - [ ] Date of the scan
+  - [ ] Date of the last update
 
 ## Project Structure
 
@@ -59,9 +54,9 @@ The project is divided into two main parts:
 
   - Node.js with TypeScript
   - Express for API routing
-  - Sharp for image processing
-  - Puppeteer or Cheerio for web scraping
-  - PostgreSQL or MongoDB for the database
+  - Sharp for image processing and perceptual hashing
+  - Scryfall API for card data and EUR pricing
+  - MongoDB for the database
 
 - **Deployment**:
   - Docker for containerization

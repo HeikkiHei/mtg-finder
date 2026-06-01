@@ -1,0 +1,22 @@
+# Enforce Conventional Commits (https://www.conventionalcommits.org/en/v1.0.0/)
+# on the commit message in $1.
+
+# Allow merge commits through unchanged.
+if head -1 "$1" | grep -qE "^Merge "; then
+    exit 0
+fi
+
+if ! head -1 "$1" | grep -qE "^.{1,90}$"; then
+    echo "⛔️ Aborting commit: Your commit message is too long. Please use less then 90 characters." >&2
+    exit 1
+fi
+
+if head -1 "$1" | grep -qE "^(db|hack|build|chore|ci|cleanup|config|dev|docs|feat|fix|perf|refactor|style|test|tweak)(\(.+?\))?:|(\(.+?\))?!: .{1,}$"; then
+    exit 0
+
+else
+    echo "⛔️ Aborting commit: Your commit message is invalid. Please follow the conventional commit method (https://www.conventionalcommits.org/)" >&2
+    echo "commit message should start with: <type>[optional scope]: <description>" >&2
+    echo "Possible types: db,hack,build,chore,ci,cleanup,config,dev,docs,feat,fix,perf,refactor,style,test,tweak"
+    exit 1
+fi

@@ -11,6 +11,11 @@ interface CardMatch {
   distance: number
 }
 
+interface CardPrices {
+  eur: number | null
+  eurFoil: number | null
+}
+
 interface CardCrop {
   index: number
   row: number
@@ -19,6 +24,7 @@ interface CardCrop {
   height: number
   image: string
   match: CardMatch | null
+  prices: CardPrices | null
 }
 
 export default function BinderUpload() {
@@ -105,6 +111,9 @@ export default function BinderUpload() {
                   {card.match
                     ? `${card.match.name} (${card.match.set.toUpperCase()})`
                     : "Unrecognized"}
+                  {card.prices?.eur != null && (
+                    <div>€{card.prices.eur.toFixed(2)}</div>
+                  )}
                 </figcaption>
               </figure>
             ))}

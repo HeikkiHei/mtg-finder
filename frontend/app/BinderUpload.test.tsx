@@ -47,8 +47,9 @@ describe("BinderUpload", () => {
           {
             index: 0, row: 0, col: 0, width: 1, height: 1, image: "data:image/png;base64,AAA",
             match: { name: "Sol Ring", set: "cmr", collectorNumber: "472", distance: 2 },
+            prices: { eur: 1.5, eurFoil: 6.25 },
           },
-          { index: 1, row: 0, col: 1, width: 1, height: 1, image: "data:image/png;base64,BBB", match: null },
+          { index: 1, row: 0, col: 1, width: 1, height: 1, image: "data:image/png;base64,BBB", match: null, prices: null },
         ],
       }),
     })
@@ -64,6 +65,7 @@ describe("BinderUpload", () => {
     expect(await screen.findByText(/detected cards \(2\)/i)).toBeInTheDocument()
     expect(screen.getAllByRole("img")).toHaveLength(2)
     expect(screen.getByText("Sol Ring (CMR)")).toBeInTheDocument()
+    expect(screen.getByText("€1.50")).toBeInTheDocument()
     expect(screen.getByText("Unrecognized")).toBeInTheDocument()
     expect(fetchMock).toHaveBeenCalledWith(
       "http://localhost:3001/api/scan/process",

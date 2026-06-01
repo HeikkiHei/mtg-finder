@@ -11,17 +11,25 @@
     "start": "concurrently \"npm run start:frontend\" \"npm run start:backend\"",
     "dev": "concurrently \"npm run start:frontend\" \"npm run dev:backend\"",
     "dev:backend": "npm --prefix backend run dev",
-    "test": "jest"
+    "test": "jest",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "audit": "npm audit --audit-level=high"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@types/cors": "^2.8.19",
     "@types/jest": "^30.0.0",
     "@typescript-eslint/eslint-plugin": "^8.60.0",
     "@typescript-eslint/parser": "^8.60.0",
     "concurrently": "^10.0.1",
     "eslint": "^10.4.1",
+    "globals": "^17.6.0",
     "jest": "^30.4.2",
-    "prettier": "^3.8.3"
+    "prettier": "^3.8.3",
+    "prettier-plugin-organize-imports": "^4.3.0",
+    "typescript-eslint": "^8.60.0"
   },
   "dependencies": {
     "mongodb": "^7.2.0",

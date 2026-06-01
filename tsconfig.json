@@ -11,5 +11,6 @@
     "isolatedModules": true,
     "resolveJsonModule": true
   },
-  "files": []
+  "files": [],
+  "references": [{ "path": "./backend" }, { "path": "./frontend" }]
 }

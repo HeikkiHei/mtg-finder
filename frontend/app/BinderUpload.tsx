@@ -2,8 +2,6 @@
 
 import { useState, type ChangeEvent } from 'react'
 
-const API_BASE = 'http://localhost:3001'
-
 interface CardMatch {
   name: string
   set: string
@@ -52,7 +50,7 @@ export default function BinderUpload() {
       const formData = new FormData()
       formData.append('image', file)
 
-      const response = await fetch(`${API_BASE}/api/scan/process`, {
+      const response = await fetch('/api/scan/process', {
         method: 'POST',
         body: formData
       })

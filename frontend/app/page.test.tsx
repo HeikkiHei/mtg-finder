@@ -25,15 +25,15 @@ describe('Home', () => {
     render(<Home />)
 
     expect(await screen.findByText(/Sol Ring - Artifact \(uncommon\)/)).toBeInTheDocument()
-    expect(fetchMock).toHaveBeenCalledWith('http://localhost:3001/api/cards')
+    expect(fetchMock).toHaveBeenCalledWith('/api/cards')
   })
 
-  it('keeps showing Loading when the cards request fails', async () => {
+  it('shows an error message when the cards request fails', async () => {
     const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
     fetchMock.mockResolvedValue({ ok: false, status: 500 })
     render(<Home />)
 
-    expect(await screen.findByText(/loading/i)).toBeInTheDocument()
+    expect(await screen.findByRole('alert')).toHaveTextContent(/couldn.t load saved cards/i)
     errorSpy.mockRestore()
   })
 })

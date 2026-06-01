@@ -12,18 +12,20 @@ interface Card {
 
 export default function Home() {
   const [cards, setCards] = useState<Card[] | null>(null)
+  const [error, setError] = useState(false)
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:3001/api/cards') // Use full backend URL
+        const response = await fetch('/api/cards') // Proxied to the backend (see next.config.ts)
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`)
         }
         const data = await response.json()
         setCards(data)
-      } catch (error) {
-        console.error('Error fetching data:', error)
+      } catch (err) {
+        console.error('Error fetching data:', err)
+        setError(true)
       }
     }
     fetchData()
@@ -44,7 +46,14 @@ export default function Home() {
         <h2 id="saved-cards-heading" className="text-xl font-semibold">
           Saved cards
         </h2>
-        {cards ? (
+        {error ? (
+          <p
+            role="alert"
+            className="mt-4 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800"
+          >
+            Couldn’t load saved cards. Is the backend running?
+          </p>
+        ) : cards ? (
           cards.length > 0 ? (
             <ul className="mt-4 divide-y divide-gray-200 overflow-hidden rounded-lg border border-gray-200 bg-white">
               {cards.map(card => (

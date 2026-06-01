@@ -72,7 +72,7 @@ describe('BinderUpload', () => {
     expect(screen.getByText('€1.50')).toBeInTheDocument()
     expect(screen.getByText('Unrecognized')).toBeInTheDocument()
     expect(fetchMock).toHaveBeenCalledWith(
-      'http://localhost:3001/api/scan/process',
+      '/api/scan/process',
       expect.objectContaining({ method: 'POST' })
     )
   })

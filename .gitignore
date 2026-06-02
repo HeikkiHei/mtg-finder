@@ -150,3 +150,6 @@ backend/recognition/data/
 
 # Local sample binder photos for manual scan testing (large; not used by tests)
 frontend/__mocks__/examples/
+
+# AI Stuffs
+.claude

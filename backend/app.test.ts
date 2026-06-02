@@ -1,7 +1,12 @@
+import { getAuth } from '@clerk/express'
 import sharp from 'sharp'
 import request from 'supertest'
 import { app } from './app'
 import { collections } from './db'
+
+// getAuth is mocked (backend/__mocks__/@clerk/express). Default: signed-in
+// 'user_test'; override per test to simulate an unauthenticated request.
+const mockGetAuth = getAuth as unknown as jest.Mock
 
 async function binderImage(cols = 3, rows = 3, cw = 60, ch = 84) {
   const cells: sharp.OverlayOptions[] = []
@@ -48,6 +53,14 @@ describe('POST /api/scan/process', () => {
     expect(res.status).toBe(400)
     expect(res.text).toMatch(/no image/i)
   })
+
+  it('returns 401 when not signed in', async () => {
+    mockGetAuth.mockReturnValueOnce({ userId: null })
+    const res = await request(app)
+      .post('/api/scan/process')
+      .attach('image', await binderImage(), 'binder.png')
+    expect(res.status).toBe(401)
+  })
 })
 
 // @clerk/express is mocked (backend/__mocks__) so getAuth() returns userId
@@ -55,6 +68,12 @@ describe('POST /api/scan/process', () => {
 describe('GET /api/cards', () => {
   afterEach(() => {
     delete collections.cards
+  })
+
+  it('returns 401 when not signed in', async () => {
+    mockGetAuth.mockReturnValueOnce({ userId: null })
+    const res = await request(app).get('/api/cards')
+    expect(res.status).toBe(401)
   })
 
   it('returns 500 when the database is not connected', async () => {
@@ -106,5 +125,11 @@ describe('POST /api/cards', () => {
 
     const res = await request(app).post('/api/cards').send({ set: 'cmr' })
     expect(res.status).toBe(400)
+  })
+
+  it('returns 401 when not signed in', async () => {
+    mockGetAuth.mockReturnValueOnce({ userId: null })
+    const res = await request(app).post('/api/cards').send({ name: 'Sol Ring' })
+    expect(res.status).toBe(401)
   })
 })

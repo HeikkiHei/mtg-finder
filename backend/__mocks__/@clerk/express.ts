@@ -4,4 +4,6 @@ import type { NextFunction, Request, Response } from 'express'
 
 export const clerkMiddleware = () => (_req: Request, _res: Response, next: NextFunction) => next()
 
-export const getAuth = (_req: Request) => ({ userId: 'user_test' })
+// jest.fn so tests can simulate an unauthenticated request with
+// getAuth.mockReturnValueOnce({ userId: null }). Defaults to a signed-in user.
+export const getAuth = jest.fn((_req: Request) => ({ userId: 'user_test' as string | null }))

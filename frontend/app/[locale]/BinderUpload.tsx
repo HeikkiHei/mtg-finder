@@ -58,7 +58,13 @@ export default function BinderUpload() {
     setCards(null)
     setGrid(null)
     setError(null)
-    setPreview(selected ? URL.createObjectURL(selected) : null)
+    setSaved({})
+    // Release the previous object URL before replacing it so repeated picks
+    // don't leak blobs.
+    setPreview(previous => {
+      if (previous) URL.revokeObjectURL(previous)
+      return selected ? URL.createObjectURL(selected) : null
+    })
   }
 
   const saveCard = async (card: CardCrop) => {
@@ -89,6 +95,7 @@ export default function BinderUpload() {
     setError(null)
     setCards(null)
     setGrid(null)
+    setSaved({})
 
     try {
       const formData = new FormData()

@@ -58,7 +58,11 @@ beforeEach(() => {
   fetchMock.mockReset()
   mockUseAuth.mockReturnValue(signedIn) // reset to signed-in before each test
   // jsdom doesn't implement object URLs, which handleSelect uses for the preview.
-  ;(globalThis.URL as { createObjectURL: unknown }).createObjectURL = jest.fn(() => 'blob:preview')
+  let urlSeq = 0
+  ;(globalThis.URL as { createObjectURL: unknown }).createObjectURL = jest.fn(
+    () => `blob:preview-${urlSeq++}`
+  )
+  ;(globalThis.URL as { revokeObjectURL: unknown }).revokeObjectURL = jest.fn()
 })
 
 describe('BinderUpload', () => {
@@ -119,7 +123,7 @@ describe('BinderUpload', () => {
     await user.click(screen.getByRole('button', { name: /process/i }))
 
     // Only the recognized card counts; the unrecognized one is listed separately.
-    expect(await screen.findByText(/detected cards \(1\)/i)).toBeInTheDocument()
+    expect(await screen.findByText(/identified cards \(1\)/i)).toBeInTheDocument()
     expect(screen.getByText(/couldn.t identify \(1\)/i)).toBeInTheDocument()
     expect(screen.getAllByRole('img')).toHaveLength(2)
     expect(screen.getByText('Sol Ring (CMR)')).toBeInTheDocument()
@@ -175,6 +179,36 @@ describe('BinderUpload', () => {
     })
     // The button reflects the saved state.
     expect(await screen.findByRole('button', { name: /^saved$/i })).toBeInTheDocument()
+  })
+
+  it('revokes the previous preview URL when a new file is selected', async () => {
+    const user = userEvent.setup()
+    const { container } = renderWithIntl(<BinderUpload />)
+
+    await user.upload(fileInput(container), pngFile())
+    await user.upload(fileInput(container), pngFile())
+
+    expect(URL.revokeObjectURL).toHaveBeenCalledWith('blob:preview-0')
+  })
+
+  it('clears the saved state when processing again', async () => {
+    fetchMock.mockImplementation((url: string) =>
+      url === '/api/cards'
+        ? Promise.resolve({ ok: true, json: async () => ({ _id: 'x' }) })
+        : Promise.resolve(recognizedScan)
+    )
+    const user = userEvent.setup()
+    const { container } = renderWithIntl(<BinderUpload />)
+
+    await user.upload(fileInput(container), pngFile())
+    await user.click(screen.getByRole('button', { name: /process/i }))
+    await user.click(await screen.findByRole('button', { name: /^save$/i }))
+    expect(await screen.findByRole('button', { name: /^saved$/i })).toBeInTheDocument()
+
+    // Re-processing replaces the results, so the Save action resets.
+    await user.click(screen.getByRole('button', { name: /process/i }))
+    expect(await screen.findByRole('button', { name: /^save$/i })).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /^saved$/i })).not.toBeInTheDocument()
   })
 
   it('defaults the layout to 3×3 and sends the chosen grid when processing', async () => {

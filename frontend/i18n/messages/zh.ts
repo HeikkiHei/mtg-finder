@@ -21,7 +21,7 @@ const zh: Messages = {
     statusProcessing: '正在处理图片…',
     statusDetected: '已识别 {count} 张卡牌。',
     original: '原图',
-    detected: '识别到的卡牌（{count}）',
+    detected: '已识别的卡牌（{count}）',
     unidentified: '无法识别（{count}）— 不计入',
     unrecognized: '未识别',
     altScanned: '已扫描卡牌：{name}',

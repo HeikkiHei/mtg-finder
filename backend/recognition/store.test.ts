@@ -41,4 +41,10 @@ describe('index store', () => {
   it('returns an empty index when the file is missing', async () => {
     expect(await loadIndex(path.join(dir, 'missing.json'))).toEqual([])
   })
+
+  it('rethrows errors other than a missing file (e.g. invalid JSON)', async () => {
+    const indexPath = path.join(dir, 'corrupt.json')
+    await fs.writeFile(indexPath, 'not valid json{')
+    await expect(loadIndex(indexPath)).rejects.toThrow()
+  })
 })

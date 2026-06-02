@@ -50,6 +50,8 @@ describe('POST /api/scan/process', () => {
   })
 })
 
+// @clerk/express is mocked (backend/__mocks__) so getAuth() returns userId
+// 'user_test' and requireAuth() is a pass-through.
 describe('GET /api/cards', () => {
   afterEach(() => {
     delete collections.cards
@@ -61,14 +63,48 @@ describe('GET /api/cards', () => {
     expect(res.status).toBe(500)
   })
 
-  it('returns the cards from the collection', async () => {
-    collections.cards = {
-      find: () => ({ toArray: async () => [{ name: 'Black Lotus' }] })
-    } as unknown as (typeof collections)['cards']
+  it('returns only the signed-in user’s cards', async () => {
+    const find = jest.fn(() => ({ toArray: async () => [{ name: 'Black Lotus' }] }))
+    collections.cards = { find } as unknown as (typeof collections)['cards']
 
     const res = await request(app).get('/api/cards')
 
     expect(res.status).toBe(200)
     expect(res.body).toEqual([{ name: 'Black Lotus' }])
+    expect(find).toHaveBeenCalledWith({ userId: 'user_test' })
+  })
+})
+
+describe('POST /api/cards', () => {
+  afterEach(() => {
+    delete collections.cards
+  })
+
+  it('saves a card to the signed-in user and returns it', async () => {
+    const insertOne = jest.fn(async () => ({ insertedId: 'abc123' }))
+    collections.cards = { insertOne } as unknown as (typeof collections)['cards']
+
+    const res = await request(app)
+      .post('/api/cards')
+      .send({ scryfallId: 'sf1', name: 'Sol Ring', set: 'cmr', eur: 0.89 })
+
+    expect(res.status).toBe(201)
+    expect(res.body).toMatchObject({
+      _id: 'abc123',
+      userId: 'user_test',
+      name: 'Sol Ring',
+      set: 'cmr',
+      eur: 0.89
+    })
+    expect(insertOne).toHaveBeenCalledWith(expect.objectContaining({ userId: 'user_test' }))
+  })
+
+  it('returns 400 when name is missing', async () => {
+    collections.cards = {
+      insertOne: jest.fn()
+    } as unknown as (typeof collections)['cards']
+
+    const res = await request(app).post('/api/cards').send({ set: 'cmr' })
+    expect(res.status).toBe(400)
   })
 })

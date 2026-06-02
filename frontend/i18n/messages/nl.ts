@@ -8,6 +8,9 @@ const nl: Messages = {
   nav: {
     language: 'Taal'
   },
+  auth: {
+    signIn: 'Inloggen'
+  },
   scan: {
     heading: 'Een mappagina scannen',
     help: 'Upload een foto van een mappagina met 9 kaarten om die in kaarten te splitsen.',
@@ -20,13 +23,16 @@ const nl: Messages = {
     detected: 'Gedetecteerde kaarten ({count})',
     unrecognized: 'Niet herkend',
     altScanned: 'Gescande kaart: {name}',
-    altUnrecognized: 'Niet-herkende kaart {index}'
+    altUnrecognized: 'Niet-herkende kaart {index}',
+    save: 'Opslaan',
+    saved: 'Opgeslagen'
   },
   saved: {
     heading: 'Opgeslagen kaarten',
     empty: 'Nog geen opgeslagen kaarten.',
     loading: 'Laden…',
-    error: 'Kan opgeslagen kaarten niet laden. Draait de backend?'
+    error: 'Kan opgeslagen kaarten niet laden. Draait de backend?',
+    signInPrompt: 'Log in om je collectie te zien.'
   }
 }
 

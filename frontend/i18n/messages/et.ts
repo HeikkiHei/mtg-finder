@@ -8,6 +8,9 @@ const et: Messages = {
   nav: {
     language: 'Keel'
   },
+  auth: {
+    signIn: 'Logi sisse'
+  },
   scan: {
     heading: 'Skanni mapilehekülg',
     help: 'Laadi üles foto 9 kaardiga mapileheküljest, et jagada see kaartideks.',
@@ -20,13 +23,16 @@ const et: Messages = {
     detected: 'Tuvastatud kaardid ({count})',
     unrecognized: 'Tuvastamata',
     altScanned: 'Skannitud kaart: {name}',
-    altUnrecognized: 'Tuvastamata kaart {index}'
+    altUnrecognized: 'Tuvastamata kaart {index}',
+    save: 'Salvesta',
+    saved: 'Salvestatud'
   },
   saved: {
     heading: 'Salvestatud kaardid',
     empty: 'Salvestatud kaarte veel pole.',
     loading: 'Laadimine…',
-    error: 'Salvestatud kaarte ei õnnestunud laadida. Kas backend töötab?'
+    error: 'Salvestatud kaarte ei õnnestunud laadida. Kas backend töötab?',
+    signInPrompt: 'Logi sisse, et näha oma kogu.'
   }
 }
 

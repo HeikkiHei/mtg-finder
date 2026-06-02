@@ -17,14 +17,15 @@ Card Typing taken from https://mtgjson.com/data-models/rulings/
 - [ ] **Pricing of MtG cards**
   - [x] Look the recognized card up on Scryfall
   - [x] Get the card's price in EUR (non-foil and foil)
+- [x] **User accounts** — each user has their own card collection (Clerk auth: Google + Apple)
 - [ ] **Let the user choose the grade and language of each scanned card**
-- [ ] **Store all scan data in a database**
+- [ ] **Store all scan data in a database** (per user)
   - [ ] Image
-  - [ ] Name
-  - [ ] Price
+  - [x] Name
+  - [x] Price
   - [ ] Condition / grade
   - [ ] Language
-  - [ ] Date of the scan
+  - [x] Date of the scan
   - [ ] Date of the last update
 
 ## Project Structure
@@ -44,17 +45,33 @@ The project is divided into two main parts:
 ## Technologies Used
 
 - **Frontend**:
-  - React with TypeScript
-  - Axios for API communication
-  - TailwindCSS or Material-UI for styling
+  - Next.js (App Router) with TypeScript
+  - Tailwind CSS for styling
+  - next-intl for localization (26 locales)
+  - Clerk for authentication (Google + Apple)
 
 - **Backend**:
   - Node.js with TypeScript
   - Express for API routing
   - Sharp for image processing and perceptual hashing
   - Scryfall API for card data and EUR pricing
+  - Clerk (`@clerk/express`) to verify auth tokens
   - MongoDB for the database
 
 - **Deployment**:
   - Docker for containerization
   - Platforms like AWS, Vercel, or Heroku for hosting
+
+## Authentication setup (Clerk)
+
+The web app and backend share one Clerk instance; the backend verifies the
+Clerk session token sent with each `/api/cards` request.
+
+1. Create an application at [clerk.com](https://clerk.com).
+2. Enable **Google** and **Apple** under _User & Authentication → Social
+   Connections_. (Sign in with Apple requires an Apple Developer Program
+   membership to create the Service ID + key.)
+3. Copy the API keys into the env files (see `frontend/.env.example` and
+   `backend/.env.example`): `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` +
+   `CLERK_SECRET_KEY` for the frontend, `CLERK_PUBLISHABLE_KEY` +
+   `CLERK_SECRET_KEY` for the backend (same instance).

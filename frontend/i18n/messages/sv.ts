@@ -8,6 +8,9 @@ const sv: Messages = {
   nav: {
     language: 'Språk'
   },
+  auth: {
+    signIn: 'Logga in'
+  },
   scan: {
     heading: 'Skanna en pärmsida',
     help: 'Ladda upp ett foto av en pärmsida med 9 kort för att dela upp den i kort.',
@@ -20,13 +23,16 @@ const sv: Messages = {
     detected: 'Hittade kort ({count})',
     unrecognized: 'Okänt',
     altScanned: 'Skannat kort: {name}',
-    altUnrecognized: 'Okänt kort {index}'
+    altUnrecognized: 'Okänt kort {index}',
+    save: 'Spara',
+    saved: 'Sparad'
   },
   saved: {
     heading: 'Sparade kort',
     empty: 'Inga sparade kort ännu.',
     loading: 'Laddar…',
-    error: 'Det gick inte att ladda sparade kort. Körs backenden?'
+    error: 'Det gick inte att ladda sparade kort. Körs backenden?',
+    signInPrompt: 'Logga in för att se din samling.'
   }
 }
 

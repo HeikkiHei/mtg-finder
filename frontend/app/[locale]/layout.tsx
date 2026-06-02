@@ -1,9 +1,11 @@
 import { routing } from '@/i18n/routing'
+import { ClerkProvider } from '@clerk/nextjs'
 import type { Metadata, Viewport } from 'next'
 import { hasLocale, NextIntlClientProvider } from 'next-intl'
 import { notFound } from 'next/navigation'
 import type { ReactNode } from 'react'
 import '../globals.css'
+import AuthControls from './AuthControls'
 import LanguageSwitcher from './LanguageSwitcher'
 
 export const metadata: Metadata = {
@@ -35,12 +37,15 @@ export default async function LocaleLayout({
   return (
     <html lang={locale}>
       <body className="min-h-dvh bg-gray-50 text-gray-900 antialiased">
-        <NextIntlClientProvider>
-          <div className="mx-auto flex w-full max-w-3xl justify-end px-4 pt-4">
-            <LanguageSwitcher />
-          </div>
-          {children}
-        </NextIntlClientProvider>
+        <ClerkProvider>
+          <NextIntlClientProvider>
+            <header className="mx-auto flex w-full max-w-3xl items-center justify-end gap-3 px-4 pt-4">
+              <LanguageSwitcher />
+              <AuthControls />
+            </header>
+            {children}
+          </NextIntlClientProvider>
+        </ClerkProvider>
       </body>
     </html>
   )

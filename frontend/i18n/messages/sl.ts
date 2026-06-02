@@ -8,6 +8,9 @@ const sl: Messages = {
   nav: {
     language: 'Jezik'
   },
+  auth: {
+    signIn: 'Prijava'
+  },
   scan: {
     heading: 'Skeniraj stran albuma',
     help: 'Naložite fotografijo strani albuma z 9 kartami, da jo razdelite na karte.',
@@ -20,13 +23,16 @@ const sl: Messages = {
     detected: 'Zaznane karte ({count})',
     unrecognized: 'Neprepoznano',
     altScanned: 'Skenirana karta: {name}',
-    altUnrecognized: 'Neprepoznana karta {index}'
+    altUnrecognized: 'Neprepoznana karta {index}',
+    save: 'Shrani',
+    saved: 'Shranjeno'
   },
   saved: {
     heading: 'Shranjene karte',
     empty: 'Še ni shranjenih kart.',
     loading: 'Nalaganje…',
-    error: 'Shranjenih kart ni bilo mogoče naložiti. Ali backend teče?'
+    error: 'Shranjenih kart ni bilo mogoče naložiti. Ali backend teče?',
+    signInPrompt: 'Prijavite se za ogled svoje zbirke.'
   }
 }
 

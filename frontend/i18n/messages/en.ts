@@ -6,6 +6,9 @@ const en = {
   nav: {
     language: 'Language'
   },
+  auth: {
+    signIn: 'Sign in'
+  },
   scan: {
     heading: 'Scan a binder page',
     help: 'Upload a photo of a 9-card binder page to split it into cards.',
@@ -18,13 +21,16 @@ const en = {
     detected: 'Detected cards ({count})',
     unrecognized: 'Unrecognized',
     altScanned: 'Scanned card: {name}',
-    altUnrecognized: 'Unrecognized card {index}'
+    altUnrecognized: 'Unrecognized card {index}',
+    save: 'Save',
+    saved: 'Saved'
   },
   saved: {
     heading: 'Saved cards',
     empty: 'No saved cards yet.',
     loading: 'Loading…',
-    error: 'Couldn’t load saved cards. Is the backend running?'
+    error: 'Couldn’t load saved cards. Is the backend running?',
+    signInPrompt: 'Sign in to see your collection.'
   }
 }
 

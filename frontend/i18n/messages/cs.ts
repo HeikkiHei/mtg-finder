@@ -8,6 +8,9 @@ const cs: Messages = {
   nav: {
     language: 'Jazyk'
   },
+  auth: {
+    signIn: 'Přihlásit'
+  },
   scan: {
     heading: 'Naskenovat stránku z alba',
     help: 'Nahrajte fotku stránky s 9 kartami a rozdělte ji na jednotlivé karty.',
@@ -20,13 +23,16 @@ const cs: Messages = {
     detected: 'Rozpoznané karty ({count})',
     unrecognized: 'Nerozpoznáno',
     altScanned: 'Naskenovaná karta: {name}',
-    altUnrecognized: 'Nerozpoznaná karta {index}'
+    altUnrecognized: 'Nerozpoznaná karta {index}',
+    save: 'Uložit',
+    saved: 'Uloženo'
   },
   saved: {
     heading: 'Uložené karty',
     empty: 'Zatím žádné uložené karty.',
     loading: 'Načítá se…',
-    error: 'Uložené karty se nepodařilo načíst. Běží backend?'
+    error: 'Uložené karty se nepodařilo načíst. Běží backend?',
+    signInPrompt: 'Přihlaste se, abyste viděli svou sbírku.'
   }
 }
 

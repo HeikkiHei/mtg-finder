@@ -8,6 +8,9 @@ const hr: Messages = {
   nav: {
     language: 'Jezik'
   },
+  auth: {
+    signIn: 'Prijava'
+  },
   scan: {
     heading: 'Skeniraj stranicu albuma',
     help: 'Učitajte fotografiju stranice albuma s 9 karata da biste je podijelili na karte.',
@@ -20,13 +23,16 @@ const hr: Messages = {
     detected: 'Pronađene karte ({count})',
     unrecognized: 'Neprepoznato',
     altScanned: 'Skenirana karta: {name}',
-    altUnrecognized: 'Neprepoznata karta {index}'
+    altUnrecognized: 'Neprepoznata karta {index}',
+    save: 'Spremi',
+    saved: 'Spremljeno'
   },
   saved: {
     heading: 'Spremljene karte',
     empty: 'Još nema spremljenih karata.',
     loading: 'Učitavanje…',
-    error: 'Spremljene karte nije moguće učitati. Radi li backend?'
+    error: 'Spremljene karte nije moguće učitati. Radi li backend?',
+    signInPrompt: 'Prijavite se da vidite svoju zbirku.'
   }
 }
 

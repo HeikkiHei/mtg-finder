@@ -8,6 +8,9 @@ const pt: Messages = {
   nav: {
     language: 'Idioma'
   },
+  auth: {
+    signIn: 'Iniciar sessão'
+  },
   scan: {
     heading: 'Digitalizar uma página de fichário',
     help: 'Carregue uma foto de uma página de fichário com 9 cartas para dividi-la em cartas.',
@@ -20,13 +23,16 @@ const pt: Messages = {
     detected: 'Cartas detetadas ({count})',
     unrecognized: 'Não reconhecida',
     altScanned: 'Carta digitalizada: {name}',
-    altUnrecognized: 'Carta não reconhecida {index}'
+    altUnrecognized: 'Carta não reconhecida {index}',
+    save: 'Guardar',
+    saved: 'Guardado'
   },
   saved: {
     heading: 'Cartas guardadas',
     empty: 'Ainda não há cartas guardadas.',
     loading: 'A carregar…',
-    error: 'Não foi possível carregar as cartas guardadas. O backend está em execução?'
+    error: 'Não foi possível carregar as cartas guardadas. O backend está em execução?',
+    signInPrompt: 'Inicie sessão para ver a sua coleção.'
   }
 }
 

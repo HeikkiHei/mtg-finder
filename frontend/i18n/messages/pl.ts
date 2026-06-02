@@ -8,6 +8,9 @@ const pl: Messages = {
   nav: {
     language: 'Język'
   },
+  auth: {
+    signIn: 'Zaloguj się'
+  },
   scan: {
     heading: 'Zeskanuj stronę segregatora',
     help: 'Prześlij zdjęcie strony segregatora z 9 kartami, aby podzielić ją na karty.',
@@ -20,13 +23,16 @@ const pl: Messages = {
     detected: 'Wykryte karty ({count})',
     unrecognized: 'Nierozpoznana',
     altScanned: 'Zeskanowana karta: {name}',
-    altUnrecognized: 'Nierozpoznana karta {index}'
+    altUnrecognized: 'Nierozpoznana karta {index}',
+    save: 'Zapisz',
+    saved: 'Zapisano'
   },
   saved: {
     heading: 'Zapisane karty',
     empty: 'Brak zapisanych kart.',
     loading: 'Ładowanie…',
-    error: 'Nie udało się załadować zapisanych kart. Czy backend działa?'
+    error: 'Nie udało się załadować zapisanych kart. Czy backend działa?',
+    signInPrompt: 'Zaloguj się, aby zobaczyć swoją kolekcję.'
   }
 }
 

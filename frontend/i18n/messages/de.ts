@@ -8,6 +8,9 @@ const de: Messages = {
   nav: {
     language: 'Sprache'
   },
+  auth: {
+    signIn: 'Anmelden'
+  },
   scan: {
     heading: 'Albumseite scannen',
     help: 'Lade ein Foto einer Albumseite mit 9 Karten hoch, um sie in einzelne Karten zu zerlegen.',
@@ -20,13 +23,16 @@ const de: Messages = {
     detected: 'Erkannte Karten ({count})',
     unrecognized: 'Nicht erkannt',
     altScanned: 'Gescannte Karte: {name}',
-    altUnrecognized: 'Nicht erkannte Karte {index}'
+    altUnrecognized: 'Nicht erkannte Karte {index}',
+    save: 'Speichern',
+    saved: 'Gespeichert'
   },
   saved: {
     heading: 'Gespeicherte Karten',
     empty: 'Noch keine gespeicherten Karten.',
     loading: 'Wird geladen…',
-    error: 'Gespeicherte Karten konnten nicht geladen werden. Läuft das Backend?'
+    error: 'Gespeicherte Karten konnten nicht geladen werden. Läuft das Backend?',
+    signInPrompt: 'Melde dich an, um deine Sammlung zu sehen.'
   }
 }
 

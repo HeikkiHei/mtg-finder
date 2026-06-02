@@ -8,6 +8,9 @@ const ga: Messages = {
   nav: {
     language: 'Teanga'
   },
+  auth: {
+    signIn: 'Logáil isteach'
+  },
   scan: {
     heading: 'Scan leathanach ceanglóra',
     help: 'Uaslódáil grianghraf de leathanach ceanglóra le 9 gcárta chun é a roinnt ina chártaí.',
@@ -20,13 +23,16 @@ const ga: Messages = {
     detected: 'Cártaí aimsithe ({count})',
     unrecognized: 'Gan aithint',
     altScanned: 'Cárta scanta: {name}',
-    altUnrecognized: 'Cárta gan aithint {index}'
+    altUnrecognized: 'Cárta gan aithint {index}',
+    save: 'Sábháil',
+    saved: 'Sábháilte'
   },
   saved: {
     heading: 'Cártaí sábháilte',
     empty: 'Níl aon chárta sábháilte fós.',
     loading: 'Á luchtú…',
-    error: 'Níorbh fhéidir na cártaí sábháilte a luchtú. An bhfuil an backend ar siúl?'
+    error: 'Níorbh fhéidir na cártaí sábháilte a luchtú. An bhfuil an backend ar siúl?',
+    signInPrompt: 'Logáil isteach chun do bhailiúchán a fheiceáil.'
   }
 }
 

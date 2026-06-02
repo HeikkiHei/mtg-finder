@@ -55,7 +55,13 @@ describe('BinderUpload', () => {
             width: 1,
             height: 1,
             image: 'data:image/png;base64,AAA',
-            match: { name: 'Sol Ring', set: 'cmr', collectorNumber: '472', distance: 2 },
+            match: {
+              scryfallId: 'sf1',
+              name: 'Sol Ring',
+              set: 'cmr',
+              collectorNumber: '472',
+              distance: 2
+            },
             prices: { eur: 1.5, eurFoil: 6.25 }
           },
           {
@@ -82,6 +88,8 @@ describe('BinderUpload', () => {
     expect(screen.getByText('Sol Ring (CMR)')).toBeInTheDocument()
     expect(screen.getByText('€1.50')).toBeInTheDocument()
     expect(screen.getByText('Unrecognized')).toBeInTheDocument()
+    // Signed in (Clerk mocked), so recognized cards offer a Save action.
+    expect(screen.getByRole('button', { name: /^save$/i })).toBeInTheDocument()
     expect(fetchMock).toHaveBeenCalledWith(
       '/api/scan/process',
       expect.objectContaining({ method: 'POST' })

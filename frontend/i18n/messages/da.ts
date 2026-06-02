@@ -8,6 +8,9 @@ const da: Messages = {
   nav: {
     language: 'Sprog'
   },
+  auth: {
+    signIn: 'Log ind'
+  },
   scan: {
     heading: 'Scan en mappeside',
     help: 'Upload et foto af en mappeside med 9 kort for at opdele den i kort.',
@@ -20,13 +23,16 @@ const da: Messages = {
     detected: 'Fundne kort ({count})',
     unrecognized: 'Ikke genkendt',
     altScanned: 'Scannet kort: {name}',
-    altUnrecognized: 'Ikke-genkendt kort {index}'
+    altUnrecognized: 'Ikke-genkendt kort {index}',
+    save: 'Gem',
+    saved: 'Gemt'
   },
   saved: {
     heading: 'Gemte kort',
     empty: 'Ingen gemte kort endnu.',
     loading: 'Indlæser…',
-    error: 'Kunne ikke indlæse gemte kort. Kører backenden?'
+    error: 'Kunne ikke indlæse gemte kort. Kører backenden?',
+    signInPrompt: 'Log ind for at se din samling.'
   }
 }
 

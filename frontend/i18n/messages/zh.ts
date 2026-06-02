@@ -7,6 +7,9 @@ const zh: Messages = {
   nav: {
     language: '语言'
   },
+  auth: {
+    signIn: '登录'
+  },
   scan: {
     heading: '扫描卡册页面',
     help: '上传一张含 9 张卡牌的卡册页面照片，将其拆分为单张卡牌。',
@@ -19,13 +22,16 @@ const zh: Messages = {
     detected: '识别到的卡牌（{count}）',
     unrecognized: '未识别',
     altScanned: '已扫描卡牌：{name}',
-    altUnrecognized: '未识别的卡牌 {index}'
+    altUnrecognized: '未识别的卡牌 {index}',
+    save: '保存',
+    saved: '已保存'
   },
   saved: {
     heading: '已保存的卡牌',
     empty: '还没有已保存的卡牌。',
     loading: '加载中…',
-    error: '无法加载已保存的卡牌。后端是否正在运行？'
+    error: '无法加载已保存的卡牌。后端是否正在运行？',
+    signInPrompt: '登录以查看你的收藏。'
   }
 }
 

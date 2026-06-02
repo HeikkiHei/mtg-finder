@@ -3,7 +3,8 @@ import cors from 'cors'
 import express, { Request, Response } from 'express'
 import multer from 'multer'
 import { collections } from './db'
-import { splitBinderPage } from './imaging/binder'
+import { DEFAULT_GRID, splitBinderPage, type BinderGrid } from './imaging/binder'
+import { cellActivity } from './imaging/detect-grid'
 import { getCardPrices, type CardPrices } from './pricing/pricing'
 import { recognize } from './recognition/matcher'
 import { loadIndex, type HashEntry } from './recognition/store'
@@ -41,9 +42,17 @@ const upload = multer({
   limits: { fileSize: 25 * 1024 * 1024, files: 1 }
 })
 
+/** Parse a 1-4 grid-axis override from a request field; null if absent/invalid. */
+function parseAxis(value: unknown): number | null {
+  const n = Number(value)
+  return Number.isInteger(n) && n >= 1 && n <= 4 ? n : null
+}
+
 // Accept a binder-page photo and split it into its individual card crops.
-// Each crop is returned as a base64 PNG data URL so the frontend can preview
-// them; recognition and pricing happen in later steps of the pipeline.
+// The page layout (rows x cols, each 1-4) comes from the request `rows`/`cols`
+// fields and defaults to the standard 3x3 nine-pocket page. Empty pockets are
+// detected and dropped so the result reflects the actual cards. Each crop is a
+// base64 PNG data URL; recognition and pricing happen per card below.
 app.post('/api/scan/process', upload.single('image'), async (req: Request, res: Response) => {
   if (!getAuth(req).userId) {
     res.status(401).send('Unauthorized')
@@ -55,7 +64,18 @@ app.post('/api/scan/process', upload.single('image'), async (req: Request, res: 
   }
 
   try {
-    const crops = await splitBinderPage(req.file.buffer)
+    const rows = parseAxis(req.body?.rows)
+    const cols = parseAxis(req.body?.cols)
+    const grid: BinderGrid = rows && cols ? { rows, cols } : DEFAULT_GRID
+
+    const allCrops = await splitBinderPage(req.file.buffer, grid)
+
+    // Drop empty pockets: keep cells whose detail is a meaningful fraction of
+    // the busiest cell (the busiest is always kept, so a single card survives).
+    const activities = await Promise.all(allCrops.map(crop => cellActivity(crop.buffer)))
+    const maxActivity = Math.max(...activities, 0)
+    const crops = allCrops.filter((_, i) => activities[i] >= maxActivity * 0.2)
+
     const index = await getIndex()
 
     const cards = await Promise.all(
@@ -87,7 +107,7 @@ app.post('/api/scan/process', upload.single('image'), async (req: Request, res: 
       card.prices = priceCache.get(scryfallId) ?? null
     }
 
-    res.status(200).send({ cards })
+    res.status(200).send({ grid, cards })
   } catch (error) {
     const message = error instanceof Error ? error.message : 'An unknown error occurred'
     res.status(500).send(message)

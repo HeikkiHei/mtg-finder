@@ -23,6 +23,7 @@ const mt: Messages = {
     statusDetected: 'Instabu {count} karti.',
     original: 'Oriġinal',
     detected: 'Karti misjuba ({count})',
+    unidentified: 'Ma ġewx identifikati ({count}) — mhux magħduda',
     unrecognized: 'Mhux magħrufa',
     altScanned: 'Karta skennjata: {name}',
     altUnrecognized: 'Karta mhux magħrufa {index}',

@@ -23,6 +23,7 @@ const fi: Messages = {
     statusDetected: 'Tunnistettiin {count} korttia.',
     original: 'Alkuperäinen',
     detected: 'Tunnistetut kortit ({count})',
+    unidentified: 'Ei tunnistettu ({count}) — ei lasketa',
     unrecognized: 'Tunnistamaton',
     altScanned: 'Skannattu kortti: {name}',
     altUnrecognized: 'Tunnistamaton kortti {index}',

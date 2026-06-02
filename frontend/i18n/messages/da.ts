@@ -23,6 +23,7 @@ const da: Messages = {
     statusDetected: 'Fandt {count} kort.',
     original: 'Original',
     detected: 'Fundne kort ({count})',
+    unidentified: 'Kunne ikke identificeres ({count}) — ikke talt med',
     unrecognized: 'Ikke genkendt',
     altScanned: 'Scannet kort: {name}',
     altUnrecognized: 'Ikke-genkendt kort {index}',

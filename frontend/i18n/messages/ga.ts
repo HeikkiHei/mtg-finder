@@ -23,6 +23,7 @@ const ga: Messages = {
     statusDetected: 'Aimsíodh {count} cárta.',
     original: 'Bunleagan',
     detected: 'Cártaí aimsithe ({count})',
+    unidentified: 'Gan aithint ({count}) — gan áireamh',
     unrecognized: 'Gan aithint',
     altScanned: 'Cárta scanta: {name}',
     altUnrecognized: 'Cárta gan aithint {index}',

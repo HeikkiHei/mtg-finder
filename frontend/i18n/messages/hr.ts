@@ -23,6 +23,7 @@ const hr: Messages = {
     statusDetected: 'Pronađeno {count} karata.',
     original: 'Original',
     detected: 'Pronađene karte ({count})',
+    unidentified: 'Neprepoznato ({count}) — ne broji se',
     unrecognized: 'Neprepoznato',
     altScanned: 'Skenirana karta: {name}',
     altUnrecognized: 'Neprepoznata karta {index}',

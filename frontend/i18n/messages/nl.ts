@@ -23,6 +23,7 @@ const nl: Messages = {
     statusDetected: '{count} kaarten gedetecteerd.',
     original: 'Origineel',
     detected: 'Gedetecteerde kaarten ({count})',
+    unidentified: 'Niet herkend ({count}) — niet meegeteld',
     unrecognized: 'Niet herkend',
     altScanned: 'Gescande kaart: {name}',
     altUnrecognized: 'Niet-herkende kaart {index}',

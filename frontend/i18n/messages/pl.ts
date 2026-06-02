@@ -23,6 +23,7 @@ const pl: Messages = {
     statusDetected: 'Wykryto {count} kart.',
     original: 'Oryginał',
     detected: 'Wykryte karty ({count})',
+    unidentified: 'Nierozpoznane ({count}) — nieliczone',
     unrecognized: 'Nierozpoznana',
     altScanned: 'Zeskanowana karta: {name}',
     altUnrecognized: 'Nierozpoznana karta {index}',

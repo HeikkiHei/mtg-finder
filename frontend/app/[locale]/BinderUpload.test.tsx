@@ -118,7 +118,9 @@ describe('BinderUpload', () => {
     await user.upload(fileInput(container), new File(['x'], 'binder.png', { type: 'image/png' }))
     await user.click(screen.getByRole('button', { name: /process/i }))
 
-    expect(await screen.findByText(/detected cards \(2\)/i)).toBeInTheDocument()
+    // Only the recognized card counts; the unrecognized one is listed separately.
+    expect(await screen.findByText(/detected cards \(1\)/i)).toBeInTheDocument()
+    expect(screen.getByText(/couldn.t identify \(1\)/i)).toBeInTheDocument()
     expect(screen.getAllByRole('img')).toHaveLength(2)
     expect(screen.getByText('Sol Ring (CMR)')).toBeInTheDocument()
     expect(screen.getByText('€1.50')).toBeInTheDocument()

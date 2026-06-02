@@ -23,6 +23,7 @@ const lt: Messages = {
     statusDetected: 'Aptikta {count} kortelių.',
     original: 'Originalas',
     detected: 'Aptiktos kortelės ({count})',
+    unidentified: 'Neatpažinta ({count}) — neįskaičiuota',
     unrecognized: 'Neatpažinta',
     altScanned: 'Nuskenuota kortelė: {name}',
     altUnrecognized: 'Neatpažinta kortelė {index}',

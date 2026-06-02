@@ -23,6 +23,7 @@ const cs: Messages = {
     statusDetected: 'Rozpoznáno {count} karet.',
     original: 'Originál',
     detected: 'Rozpoznané karty ({count})',
+    unidentified: 'Nerozpoznáno ({count}) — nezapočítává se',
     unrecognized: 'Nerozpoznáno',
     altScanned: 'Naskenovaná karta: {name}',
     altUnrecognized: 'Nerozpoznaná karta {index}',

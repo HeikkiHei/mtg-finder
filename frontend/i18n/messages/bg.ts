@@ -23,6 +23,7 @@ const bg: Messages = {
     statusDetected: 'Открити са {count} карти.',
     original: 'Оригинал',
     detected: 'Открити карти ({count})',
+    unidentified: 'Неразпознати ({count}) — не се броят',
     unrecognized: 'Неразпозната',
     altScanned: 'Сканирана карта: {name}',
     altUnrecognized: 'Неразпозната карта {index}',

@@ -23,6 +23,7 @@ const ja: Messages = {
     statusDetected: '{count} 枚のカードを検出しました。',
     original: '元の画像',
     detected: '検出されたカード（{count}）',
+    unidentified: '識別できませんでした（{count}）— カウント対象外',
     unrecognized: '未認識',
     altScanned: 'スキャンしたカード: {name}',
     altUnrecognized: '未認識のカード {index}',

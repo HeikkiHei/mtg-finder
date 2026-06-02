@@ -23,6 +23,7 @@ const sv: Messages = {
     statusDetected: 'Hittade {count} kort.',
     original: 'Original',
     detected: 'Hittade kort ({count})',
+    unidentified: 'Kunde inte identifieras ({count}) — räknas inte',
     unrecognized: 'Okänt',
     altScanned: 'Skannat kort: {name}',
     altUnrecognized: 'Okänt kort {index}',

@@ -23,6 +23,7 @@ const el: Messages = {
     statusDetected: 'Εντοπίστηκαν {count} κάρτες.',
     original: 'Πρωτότυπο',
     detected: 'Κάρτες που εντοπίστηκαν ({count})',
+    unidentified: 'Δεν αναγνωρίστηκαν ({count}) — δεν μετρώνται',
     unrecognized: 'Μη αναγνωρισμένη',
     altScanned: 'Σαρωμένη κάρτα: {name}',
     altUnrecognized: 'Μη αναγνωρισμένη κάρτα {index}',

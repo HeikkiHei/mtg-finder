@@ -23,6 +23,7 @@ const fr: Messages = {
     statusDetected: '{count} cartes détectées.',
     original: 'Original',
     detected: 'Cartes détectées ({count})',
+    unidentified: 'Non identifiées ({count}) — non comptées',
     unrecognized: 'Non reconnue',
     altScanned: 'Carte scannée : {name}',
     altUnrecognized: 'Carte non reconnue {index}',

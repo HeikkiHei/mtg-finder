@@ -23,6 +23,7 @@ const ro: Messages = {
     statusDetected: 'S-au detectat {count} cărți.',
     original: 'Original',
     detected: 'Cărți detectate ({count})',
+    unidentified: 'Neidentificate ({count}) — necontorizate',
     unrecognized: 'Nerecunoscută',
     altScanned: 'Carte scanată: {name}',
     altUnrecognized: 'Carte nerecunoscută {index}',

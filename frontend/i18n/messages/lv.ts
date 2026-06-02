@@ -23,6 +23,7 @@ const lv: Messages = {
     statusDetected: 'Atrastas {count} kārtis.',
     original: 'Oriģināls',
     detected: 'Atrastās kārtis ({count})',
+    unidentified: 'Neatpazīti ({count}) — netiek skaitīti',
     unrecognized: 'Neatpazīta',
     altScanned: 'Skenēta kārts: {name}',
     altUnrecognized: 'Neatpazīta kārts {index}',

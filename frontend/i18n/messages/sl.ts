@@ -23,6 +23,7 @@ const sl: Messages = {
     statusDetected: 'Zaznanih {count} kart.',
     original: 'Izvirnik',
     detected: 'Zaznane karte ({count})',
+    unidentified: 'Neprepoznano ({count}) — ni šteto',
     unrecognized: 'Neprepoznano',
     altScanned: 'Skenirana karta: {name}',
     altUnrecognized: 'Neprepoznana karta {index}',

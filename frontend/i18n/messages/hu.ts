@@ -23,6 +23,7 @@ const hu: Messages = {
     statusDetected: '{count} kártya felismerve.',
     original: 'Eredeti',
     detected: 'Felismert kártyák ({count})',
+    unidentified: 'Nem azonosítható ({count}) — nincs beleszámítva',
     unrecognized: 'Nem felismert',
     altScanned: 'Beolvasott kártya: {name}',
     altUnrecognized: 'Nem felismert kártya {index}',

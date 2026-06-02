@@ -21,6 +21,7 @@ const en = {
     statusDetected: 'Detected {count} cards.',
     original: 'Original',
     detected: 'Detected cards ({count})',
+    unidentified: 'Couldn’t identify ({count}) — not counted',
     unrecognized: 'Unrecognized',
     altScanned: 'Scanned card: {name}',
     altUnrecognized: 'Unrecognized card {index}',

@@ -23,6 +23,7 @@ const it: Messages = {
     statusDetected: 'Rilevate {count} carte.',
     original: 'Originale',
     detected: 'Carte rilevate ({count})',
+    unidentified: 'Non identificate ({count}) — non conteggiate',
     unrecognized: 'Non riconosciuta',
     altScanned: 'Carta scansionata: {name}',
     altUnrecognized: 'Carta non riconosciuta {index}',

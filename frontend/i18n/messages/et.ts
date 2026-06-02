@@ -23,6 +23,7 @@ const et: Messages = {
     statusDetected: 'Tuvastati {count} kaarti.',
     original: 'Originaal',
     detected: 'Tuvastatud kaardid ({count})',
+    unidentified: 'Tuvastamata ({count}) — ei arvestata',
     unrecognized: 'Tuvastamata',
     altScanned: 'Skannitud kaart: {name}',
     altUnrecognized: 'Tuvastamata kaart {index}',

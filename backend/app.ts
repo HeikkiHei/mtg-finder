@@ -1,4 +1,4 @@
-import { clerkMiddleware, getAuth, requireAuth } from '@clerk/express'
+import { clerkMiddleware, getAuth } from '@clerk/express'
 import cors from 'cors'
 import express, { Request, Response } from 'express'
 import multer from 'multer'
@@ -100,9 +100,13 @@ interface SavedCard {
 }
 
 // Return only the signed-in user's saved cards.
-app.get('/api/cards', requireAuth(), async (req: Request, res: Response) => {
+app.get('/api/cards', async (req: Request, res: Response) => {
   try {
     const { userId } = getAuth(req)
+    if (!userId) {
+      res.status(401).send('Unauthorized')
+      return
+    }
     const cards = await collections.cards!.find({ userId }).toArray()
     res.status(200).send(cards)
   } catch (error) {
@@ -112,18 +116,22 @@ app.get('/api/cards', requireAuth(), async (req: Request, res: Response) => {
 })
 
 // Save a card to the signed-in user's collection.
-app.post('/api/cards', requireAuth(), async (req: Request, res: Response) => {
+app.post('/api/cards', async (req: Request, res: Response) => {
   try {
     const { userId } = getAuth(req)
-    const { scryfallId, name, set, eur } = req.body ?? {}
+    if (!userId) {
+      res.status(401).send('Unauthorized')
+      return
+    }
 
+    const { scryfallId, name, set, eur } = req.body ?? {}
     if (typeof name !== 'string' || name.length === 0) {
       res.status(400).send("'name' is required")
       return
     }
 
     const card: SavedCard = {
-      userId: userId!,
+      userId,
       scryfallId: typeof scryfallId === 'string' ? scryfallId : null,
       name,
       set: typeof set === 'string' ? set : null,

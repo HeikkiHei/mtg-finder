@@ -13,8 +13,10 @@ const nl: Messages = {
   },
   scan: {
     heading: 'Een mappagina scannen',
-    help: 'Upload een foto van een mappagina met 9 kaarten om die in kaarten te splitsen.',
+    help: 'Upload een foto van kaarten in een raster (tot 4×4) en kies hieronder de indeling. Lege plekken worden overgeslagen.',
     fileLabel: 'Mapfoto',
+    gridLabel: 'Rasterindeling',
+    gridUsed: 'Indeling: {rows}×{cols}',
     process: 'Verwerken',
     processing: 'Bezig met verwerken…',
     statusProcessing: 'Afbeelding wordt verwerkt…',

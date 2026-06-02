@@ -13,8 +13,10 @@ const hu: Messages = {
   },
   scan: {
     heading: 'Albumoldal beolvasása',
-    help: 'Tölts fel egy fotót egy 9 kártyás albumoldalról, hogy kártyákra bontsd.',
+    help: 'Tölts fel egy fotót rácsba rendezett kártyákról (legfeljebb 4×4), és válaszd ki lent az elrendezést. Az üres helyek kimaradnak.',
     fileLabel: 'Albumfotó',
+    gridLabel: 'Rács elrendezése',
+    gridUsed: 'Elrendezés: {rows}×{cols}',
     process: 'Feldolgozás',
     processing: 'Feldolgozás…',
     statusProcessing: 'Kép feldolgozása…',

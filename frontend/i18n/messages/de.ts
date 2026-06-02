@@ -13,8 +13,10 @@ const de: Messages = {
   },
   scan: {
     heading: 'Albumseite scannen',
-    help: 'Lade ein Foto einer Albumseite mit 9 Karten hoch, um sie in einzelne Karten zu zerlegen.',
+    help: 'Lade ein Foto von Karten in einem Raster (bis zu 4×4) hoch und wähle unten das Layout. Leere Plätze werden übersprungen.',
     fileLabel: 'Albumfoto',
+    gridLabel: 'Rasterlayout',
+    gridUsed: 'Layout: {rows}×{cols}',
     process: 'Verarbeiten',
     processing: 'Wird verarbeitet…',
     statusProcessing: 'Bild wird verarbeitet…',

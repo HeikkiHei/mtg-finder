@@ -13,8 +13,10 @@ const da: Messages = {
   },
   scan: {
     heading: 'Scan en mappeside',
-    help: 'Upload et foto af en mappeside med 9 kort for at opdele den i kort.',
+    help: 'Upload et foto af kort lagt ud i et gitter (op til 4×4), og vælg layoutet nedenfor. Tomme felter springes over.',
     fileLabel: 'Mappefoto',
+    gridLabel: 'Gitterlayout',
+    gridUsed: 'Layout: {rows}×{cols}',
     process: 'Behandl',
     processing: 'Behandler…',
     statusProcessing: 'Behandler billede…',

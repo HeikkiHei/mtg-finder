@@ -13,8 +13,10 @@ const fi: Messages = {
   },
   scan: {
     heading: 'Skannaa kansiosivu',
-    help: 'Lataa kuva 9 kortin kansiosivusta jakaaksesi sen yksittäisiin kortteihin.',
+    help: 'Lataa kuva ruudukkoon aseteltuista korteista (enintään 4×4) ja valitse asettelu alta. Tyhjät paikat ohitetaan.',
     fileLabel: 'Kansiokuva',
+    gridLabel: 'Ruudukon asettelu',
+    gridUsed: 'Asettelu: {rows}×{cols}',
     process: 'Käsittele',
     processing: 'Käsitellään…',
     statusProcessing: 'Käsitellään kuvaa…',

@@ -13,8 +13,10 @@ const pl: Messages = {
   },
   scan: {
     heading: 'Zeskanuj stronę segregatora',
-    help: 'Prześlij zdjęcie strony segregatora z 9 kartami, aby podzielić ją na karty.',
+    help: 'Prześlij zdjęcie kart ułożonych w siatkę (do 4×4) i wybierz układ poniżej. Puste miejsca są pomijane.',
     fileLabel: 'Zdjęcie segregatora',
+    gridLabel: 'Układ siatki',
+    gridUsed: 'Układ: {rows}×{cols}',
     process: 'Przetwórz',
     processing: 'Przetwarzanie…',
     statusProcessing: 'Przetwarzanie obrazu…',

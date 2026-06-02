@@ -13,8 +13,10 @@ const fr: Messages = {
   },
   scan: {
     heading: 'Scanner une page de classeur',
-    help: 'Téléversez une photo d’une page de classeur de 9 cartes pour la diviser en cartes.',
+    help: 'Téléchargez une photo de cartes disposées en grille (jusqu’à 4×4) et choisissez la disposition ci-dessous. Les emplacements vides sont ignorés.',
     fileLabel: 'Photo du classeur',
+    gridLabel: 'Disposition de la grille',
+    gridUsed: 'Disposition : {rows}×{cols}',
     process: 'Traiter',
     processing: 'Traitement…',
     statusProcessing: 'Traitement de l’image…',

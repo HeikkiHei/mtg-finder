@@ -13,8 +13,10 @@ const et: Messages = {
   },
   scan: {
     heading: 'Skanni mapilehekülg',
-    help: 'Laadi üles foto 9 kaardiga mapileheküljest, et jagada see kaartideks.',
+    help: 'Laadi üles foto ruudustikku paigutatud kaartidest (kuni 4×4) ja vali allpool paigutus. Tühjad kohad jäetakse vahele.',
     fileLabel: 'Mapi foto',
+    gridLabel: 'Ruudustiku paigutus',
+    gridUsed: 'Paigutus: {rows}×{cols}',
     process: 'Töötle',
     processing: 'Töötlemine…',
     statusProcessing: 'Pildi töötlemine…',

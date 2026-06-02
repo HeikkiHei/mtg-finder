@@ -13,8 +13,10 @@ const ro: Messages = {
   },
   scan: {
     heading: 'Scanează o pagină de clasor',
-    help: 'Încarcă o fotografie a unei pagini de clasor cu 9 cărți pentru a o împărți în cărți.',
+    help: 'Încarcă o fotografie cu cărți aranjate într-o grilă (până la 4×4) și alege aspectul mai jos. Spațiile goale sunt omise.',
     fileLabel: 'Fotografie clasor',
+    gridLabel: 'Aspectul grilei',
+    gridUsed: 'Aspect: {rows}×{cols}',
     process: 'Procesează',
     processing: 'Se procesează…',
     statusProcessing: 'Se procesează imaginea…',

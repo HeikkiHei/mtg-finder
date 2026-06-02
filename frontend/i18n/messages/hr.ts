@@ -13,8 +13,10 @@ const hr: Messages = {
   },
   scan: {
     heading: 'Skeniraj stranicu albuma',
-    help: 'Učitajte fotografiju stranice albuma s 9 karata da biste je podijelili na karte.',
+    help: 'Prenesite fotografiju karata posloženih u mrežu (do 4×4) i odaberite raspored u nastavku. Prazna mjesta se preskaču.',
     fileLabel: 'Fotografija albuma',
+    gridLabel: 'Raspored mreže',
+    gridUsed: 'Raspored: {rows}×{cols}',
     process: 'Obradi',
     processing: 'Obrađuje se…',
     statusProcessing: 'Obrada slike…',

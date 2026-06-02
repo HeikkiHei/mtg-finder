@@ -12,8 +12,10 @@ const zh: Messages = {
   },
   scan: {
     heading: '扫描卡册页面',
-    help: '上传一张含 9 张卡牌的卡册页面照片，将其拆分为单张卡牌。',
+    help: '上传以网格排列的卡牌（最多 4×4）照片，并在下方选择布局。空位将被跳过。',
     fileLabel: '卡册照片',
+    gridLabel: '网格布局',
+    gridUsed: '布局：{rows}×{cols}',
     process: '处理',
     processing: '处理中…',
     statusProcessing: '正在处理图片…',

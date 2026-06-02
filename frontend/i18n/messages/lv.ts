@@ -13,8 +13,10 @@ const lv: Messages = {
   },
   scan: {
     heading: 'Skenēt mapes lapu',
-    help: 'Augšupielādējiet 9 kāršu mapes lapas fotoattēlu, lai sadalītu to kārtīs.',
+    help: 'Augšupielādējiet fotoattēlu ar kārtīm, kas izkārtotas režģī (līdz 4×4), un izvēlieties izkārtojumu zemāk. Tukšās vietas tiek izlaistas.',
     fileLabel: 'Mapes fotoattēls',
+    gridLabel: 'Režģa izkārtojums',
+    gridUsed: 'Izkārtojums: {rows}×{cols}',
     process: 'Apstrādāt',
     processing: 'Apstrādā…',
     statusProcessing: 'Apstrādā attēlu…',

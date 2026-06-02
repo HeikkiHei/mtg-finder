@@ -13,8 +13,10 @@ const mt: Messages = {
   },
   scan: {
     heading: 'Skennja paġna tal-fajl',
-    help: 'Tella’ ritratt ta’ paġna tal-fajl b’9 karti biex taqsamha f’karti.',
+    help: "Tella' ritratt ta' karti mqassma fi grilja (sa 4×4) u agħżel it-tqassim hawn taħt. L-postijiet vojta jinqabżu.",
     fileLabel: 'Ritratt tal-fajl',
+    gridLabel: 'Tqassim tal-grilja',
+    gridUsed: 'Tqassim: {rows}×{cols}',
     process: 'Ipproċessa',
     processing: 'Qed jiġi pproċessat…',
     statusProcessing: 'Qed tiġi pproċessata l-immaġni…',

@@ -13,8 +13,10 @@ const sl: Messages = {
   },
   scan: {
     heading: 'Skeniraj stran albuma',
-    help: 'Naložite fotografijo strani albuma z 9 kartami, da jo razdelite na karte.',
+    help: 'Naložite fotografijo kart, razporejenih v mrežo (do 4×4), in spodaj izberite postavitev. Prazna mesta se preskočijo.',
     fileLabel: 'Fotografija albuma',
+    gridLabel: 'Postavitev mreže',
+    gridUsed: 'Postavitev: {rows}×{cols}',
     process: 'Obdelaj',
     processing: 'Obdelava…',
     statusProcessing: 'Obdelava slike…',

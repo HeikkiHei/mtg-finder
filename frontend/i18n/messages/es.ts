@@ -13,8 +13,10 @@ const es: Messages = {
   },
   scan: {
     heading: 'Escanear una página de archivador',
-    help: 'Sube una foto de una página de archivador de 9 cartas para dividirla en cartas.',
+    help: 'Sube una foto de cartas dispuestas en una cuadrícula (hasta 4×4) y elige la disposición abajo. Los espacios vacíos se omiten.',
     fileLabel: 'Foto del archivador',
+    gridLabel: 'Disposición de la cuadrícula',
+    gridUsed: 'Disposición: {rows}×{cols}',
     process: 'Procesar',
     processing: 'Procesando…',
     statusProcessing: 'Procesando imagen…',

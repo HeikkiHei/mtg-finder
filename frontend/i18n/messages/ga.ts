@@ -13,8 +13,10 @@ const ga: Messages = {
   },
   scan: {
     heading: 'Scan leathanach ceanglóra',
-    help: 'Uaslódáil grianghraf de leathanach ceanglóra le 9 gcárta chun é a roinnt ina chártaí.',
+    help: 'Uaslódáil grianghraf de chártaí leagtha amach i ngreille (suas le 4×4) agus roghnaigh an leagan amach thíos. Ní háirítear sliotáin fholmha.',
     fileLabel: 'Grianghraf ceanglóra',
+    gridLabel: 'Leagan amach na greille',
+    gridUsed: 'Leagan amach: {rows}×{cols}',
     process: 'Próiseáil',
     processing: 'Á phróiseáil…',
     statusProcessing: 'Íomhá á próiseáil…',

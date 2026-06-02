@@ -13,8 +13,10 @@ const ja: Messages = {
   },
   scan: {
     heading: 'バインダーページをスキャン',
-    help: '9枚のカードが並んだバインダーページの写真をアップロードして、カードごとに分割します。',
+    help: 'グリッド状に並べたカード（最大4×4）の写真をアップロードし、下でレイアウトを選んでください。空きスロットはスキップされます。',
     fileLabel: 'バインダーの写真',
+    gridLabel: 'グリッドレイアウト',
+    gridUsed: 'レイアウト: {rows}×{cols}',
     process: '処理',
     processing: '処理中…',
     statusProcessing: '画像を処理しています…',

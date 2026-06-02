@@ -13,8 +13,10 @@ const it: Messages = {
   },
   scan: {
     heading: 'Scansiona una pagina del raccoglitore',
-    help: 'Carica una foto di una pagina del raccoglitore con 9 carte per dividerla in carte.',
+    help: 'Carica una foto di carte disposte in una griglia (fino a 4×4) e scegli la disposizione qui sotto. Gli spazi vuoti vengono saltati.',
     fileLabel: 'Foto del raccoglitore',
+    gridLabel: 'Disposizione della griglia',
+    gridUsed: 'Disposizione: {rows}×{cols}',
     process: 'Elabora',
     processing: 'Elaborazione…',
     statusProcessing: 'Elaborazione dell’immagine…',

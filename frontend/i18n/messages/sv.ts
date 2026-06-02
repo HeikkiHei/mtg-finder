@@ -13,8 +13,10 @@ const sv: Messages = {
   },
   scan: {
     heading: 'Skanna en pärmsida',
-    help: 'Ladda upp ett foto av en pärmsida med 9 kort för att dela upp den i kort.',
+    help: 'Ladda upp ett foto av kort upplagda i ett rutnät (upp till 4×4) och välj layouten nedan. Tomma platser hoppas över.',
     fileLabel: 'Pärmfoto',
+    gridLabel: 'Rutnätslayout',
+    gridUsed: 'Layout: {rows}×{cols}',
     process: 'Bearbeta',
     processing: 'Bearbetar…',
     statusProcessing: 'Bearbetar bild…',

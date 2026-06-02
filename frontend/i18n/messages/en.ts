@@ -11,8 +11,10 @@ const en = {
   },
   scan: {
     heading: 'Scan a binder page',
-    help: 'Upload a photo of a 9-card binder page to split it into cards.',
+    help: 'Upload a photo of cards laid out in a grid (up to 4×4) and choose the layout below. Empty slots are skipped.',
     fileLabel: 'Binder photo',
+    gridLabel: 'Grid layout',
+    gridUsed: 'Layout: {rows}×{cols}',
     process: 'Process',
     processing: 'Processing…',
     statusProcessing: 'Processing image…',

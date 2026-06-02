@@ -13,8 +13,10 @@ const pt: Messages = {
   },
   scan: {
     heading: 'Digitalizar uma página de fichário',
-    help: 'Carregue uma foto de uma página de fichário com 9 cartas para dividi-la em cartas.',
+    help: 'Carregue uma foto de cartas dispostas em uma grade (até 4×4) e escolha o layout abaixo. Espaços vazios são ignorados.',
     fileLabel: 'Foto do fichário',
+    gridLabel: 'Layout da grade',
+    gridUsed: 'Layout: {rows}×{cols}',
     process: 'Processar',
     processing: 'A processar…',
     statusProcessing: 'A processar imagem…',

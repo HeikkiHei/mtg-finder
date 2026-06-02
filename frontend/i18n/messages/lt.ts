@@ -13,8 +13,10 @@ const lt: Messages = {
   },
   scan: {
     heading: 'Nuskenuoti segtuvo puslapį',
-    help: 'Įkelkite 9 kortelių segtuvo puslapio nuotrauką, kad padalytumėte ją į korteles.',
+    help: 'Įkelkite tinklelyje išdėstytų kortelių nuotrauką (iki 4×4) ir pasirinkite išdėstymą žemiau. Tuščios vietos praleidžiamos.',
     fileLabel: 'Segtuvo nuotrauka',
+    gridLabel: 'Tinklelio išdėstymas',
+    gridUsed: 'Išdėstymas: {rows}×{cols}',
     process: 'Apdoroti',
     processing: 'Apdorojama…',
     statusProcessing: 'Apdorojamas vaizdas…',

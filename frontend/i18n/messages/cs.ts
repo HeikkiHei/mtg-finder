@@ -13,8 +13,10 @@ const cs: Messages = {
   },
   scan: {
     heading: 'Naskenovat stránku z alba',
-    help: 'Nahrajte fotku stránky s 9 kartami a rozdělte ji na jednotlivé karty.',
+    help: 'Nahrajte fotku karet uspořádaných do mřížky (až 4×4) a níže zvolte rozložení. Prázdná místa se přeskočí.',
     fileLabel: 'Fotka alba',
+    gridLabel: 'Rozložení mřížky',
+    gridUsed: 'Rozložení: {rows}×{cols}',
     process: 'Zpracovat',
     processing: 'Zpracovává se…',
     statusProcessing: 'Zpracování obrázku…',

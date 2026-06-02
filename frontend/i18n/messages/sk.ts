@@ -13,8 +13,10 @@ const sk: Messages = {
   },
   scan: {
     heading: 'Naskenovať stranu albumu',
-    help: 'Nahrajte fotku strany albumu s 9 kartami, aby ste ju rozdelili na karty.',
+    help: 'Nahrajte fotku kariet usporiadaných do mriežky (až 4×4) a nižšie zvoľte rozloženie. Prázdne miesta sa preskočia.',
     fileLabel: 'Fotka albumu',
+    gridLabel: 'Rozloženie mriežky',
+    gridUsed: 'Rozloženie: {rows}×{cols}',
     process: 'Spracovať',
     processing: 'Spracúva sa…',
     statusProcessing: 'Spracúva sa obrázok…',

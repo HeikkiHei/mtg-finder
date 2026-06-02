@@ -1,6 +1,13 @@
 import sharp from 'sharp'
 
 /**
+ * Below this average-gradient value a cell is treated as a blank pocket even if
+ * it is the busiest one on the page, so an all-empty page yields zero cards
+ * instead of a full grid. Real cards (borders, art, text) score far higher.
+ */
+export const MIN_CARD_ACTIVITY = 4
+
+/**
  * Average gradient "activity" of a single card-cell crop. A card is full of
  * detail (high activity); an empty binder pocket is near-blank (low). The scan
  * endpoint compares each cell against the busiest one to drop empty pockets, so

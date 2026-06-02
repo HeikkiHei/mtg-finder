@@ -1,5 +1,5 @@
 import sharp from 'sharp'
-import { cellActivity } from './detect-grid'
+import { cellActivity } from './occupancy'
 
 // A per-pixel-noise tile (busy card detail).
 async function noiseTile(width: number, height: number, seed = 1) {

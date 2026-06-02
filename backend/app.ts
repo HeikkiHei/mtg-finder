@@ -4,7 +4,7 @@ import express, { Request, Response } from 'express'
 import multer from 'multer'
 import { collections } from './db'
 import { DEFAULT_GRID, splitBinderPage, type BinderGrid } from './imaging/binder'
-import { cellActivity } from './imaging/detect-grid'
+import { cellActivity, MIN_CARD_ACTIVITY } from './imaging/occupancy'
 import { getCardPrices, type CardPrices } from './pricing/pricing'
 import { recognize } from './recognition/matcher'
 import { loadIndex, type HashEntry } from './recognition/store'
@@ -72,9 +72,14 @@ app.post('/api/scan/process', upload.single('image'), async (req: Request, res: 
 
     // Drop empty pockets: keep cells whose detail is a meaningful fraction of
     // the busiest cell (the busiest is always kept, so a single card survives).
+    // If even the busiest cell is essentially blank, the page holds no cards —
+    // otherwise an all-empty page would report a full grid.
     const activities = await Promise.all(allCrops.map(crop => cellActivity(crop.buffer)))
     const maxActivity = Math.max(...activities, 0)
-    const crops = allCrops.filter((_, i) => activities[i] >= maxActivity * 0.2)
+    const crops =
+      maxActivity < MIN_CARD_ACTIVITY
+        ? []
+        : allCrops.filter((_, i) => activities[i] >= maxActivity * 0.2)
 
     const index = await getIndex()
 

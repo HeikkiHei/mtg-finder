@@ -78,8 +78,10 @@ export default function BinderUpload() {
       const formData = new FormData()
       formData.append('image', file)
 
+      const token = await getToken()
       const response = await fetch('/api/scan/process', {
         method: 'POST',
+        headers: { Authorization: `Bearer ${token}` },
         body: formData
       })
 

@@ -44,6 +44,10 @@ const upload = multer({
 // Each crop is returned as a base64 PNG data URL so the frontend can preview
 // them; recognition and pricing happen in later steps of the pipeline.
 app.post('/api/scan/process', upload.single('image'), async (req: Request, res: Response) => {
+  if (!getAuth(req).userId) {
+    res.status(401).send('Unauthorized')
+    return
+  }
   if (!req.file) {
     res.status(400).send("No image uploaded (expected field 'image')")
     return

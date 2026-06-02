@@ -52,7 +52,11 @@ export default function Home() {
         <h2 id="saved-cards-heading" className="text-xl font-semibold">
           {t('saved.heading')}
         </h2>
-        {!isSignedIn ? (
+        {!isLoaded ? (
+          <p className="mt-4 text-gray-600" role="status">
+            {t('saved.loading')}
+          </p>
+        ) : !isSignedIn ? (
           <p className="mt-4 text-gray-600">{t('saved.signInPrompt')}</p>
         ) : error ? (
           <p

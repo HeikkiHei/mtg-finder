@@ -28,9 +28,10 @@ export const app = express()
 
 app.use(cors()) // Enable CORS
 app.use(express.json()) // Parse JSON request bodies (used by POST /api/cards)
-// Attach Clerk auth context to every request (does not require auth on its own;
-// individual routes opt in with requireAuth()). Reads CLERK_SECRET_KEY and
-// CLERK_PUBLISHABLE_KEY from the environment.
+// Attach Clerk auth context to every request (does not require auth on its
+// own; individual routes enforce it by checking getAuth(req).userId and
+// returning 401). Reads CLERK_SECRET_KEY and CLERK_PUBLISHABLE_KEY from the
+// environment.
 app.use(clerkMiddleware())
 
 // Hold the uploaded binder page in memory; we process it immediately and don't

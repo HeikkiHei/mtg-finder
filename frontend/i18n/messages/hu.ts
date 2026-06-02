@@ -8,6 +8,9 @@ const hu: Messages = {
   nav: {
     language: 'Nyelv'
   },
+  auth: {
+    signIn: 'Bejelentkezés'
+  },
   scan: {
     heading: 'Albumoldal beolvasása',
     help: 'Tölts fel egy fotót egy 9 kártyás albumoldalról, hogy kártyákra bontsd.',
@@ -20,13 +23,16 @@ const hu: Messages = {
     detected: 'Felismert kártyák ({count})',
     unrecognized: 'Nem felismert',
     altScanned: 'Beolvasott kártya: {name}',
-    altUnrecognized: 'Nem felismert kártya {index}'
+    altUnrecognized: 'Nem felismert kártya {index}',
+    save: 'Mentés',
+    saved: 'Mentve'
   },
   saved: {
     heading: 'Mentett kártyák',
     empty: 'Még nincsenek mentett kártyák.',
     loading: 'Betöltés…',
-    error: 'A mentett kártyákat nem sikerült betölteni. Fut a backend?'
+    error: 'A mentett kártyákat nem sikerült betölteni. Fut a backend?',
+    signInPrompt: 'Jelentkezz be a gyűjteményed megtekintéséhez.'
   }
 }
 

@@ -8,6 +8,9 @@ const fi: Messages = {
   nav: {
     language: 'Kieli'
   },
+  auth: {
+    signIn: 'Kirjaudu'
+  },
   scan: {
     heading: 'Skannaa kansiosivu',
     help: 'Lataa kuva 9 kortin kansiosivusta jakaaksesi sen yksittäisiin kortteihin.',
@@ -20,13 +23,16 @@ const fi: Messages = {
     detected: 'Tunnistetut kortit ({count})',
     unrecognized: 'Tunnistamaton',
     altScanned: 'Skannattu kortti: {name}',
-    altUnrecognized: 'Tunnistamaton kortti {index}'
+    altUnrecognized: 'Tunnistamaton kortti {index}',
+    save: 'Tallenna',
+    saved: 'Tallennettu'
   },
   saved: {
     heading: 'Tallennetut kortit',
     empty: 'Ei vielä tallennettuja kortteja.',
     loading: 'Ladataan…',
-    error: 'Tallennettujen korttien lataaminen epäonnistui. Onko backend käynnissä?'
+    error: 'Tallennettujen korttien lataaminen epäonnistui. Onko backend käynnissä?',
+    signInPrompt: 'Kirjaudu sisään nähdäksesi kokoelmasi.'
   }
 }
 

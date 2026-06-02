@@ -1,9 +1,11 @@
 'use client'
 
+import { useAuth } from '@clerk/nextjs'
 import { useTranslations } from 'next-intl'
 import { useState, type ChangeEvent } from 'react'
 
 interface CardMatch {
+  scryfallId: string
   name: string
   set: string
   collectorNumber: string
@@ -28,11 +30,13 @@ interface CardCrop {
 
 export default function BinderUpload() {
   const t = useTranslations('scan')
+  const { isSignedIn, getToken } = useAuth()
   const [file, setFile] = useState<File | null>(null)
   const [preview, setPreview] = useState<string | null>(null)
   const [cards, setCards] = useState<CardCrop[] | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [saved, setSaved] = useState<Record<number, boolean>>({})
 
   const handleSelect = (event: ChangeEvent<HTMLInputElement>) => {
     const selected = event.target.files?.[0] ?? null
@@ -40,6 +44,28 @@ export default function BinderUpload() {
     setCards(null)
     setError(null)
     setPreview(selected ? URL.createObjectURL(selected) : null)
+  }
+
+  const saveCard = async (card: CardCrop) => {
+    if (!card.match) return
+    try {
+      const token = await getToken()
+      const response = await fetch('/api/cards', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({
+          scryfallId: card.match.scryfallId,
+          name: card.match.name,
+          set: card.match.set,
+          eur: card.prices?.eur ?? null
+        })
+      })
+      if (response.ok) {
+        setSaved(current => ({ ...current, [card.index]: true }))
+      }
+    } catch (err) {
+      console.error('Failed to save card:', err)
+    }
   }
 
   const handleProcess = async () => {
@@ -168,6 +194,16 @@ export default function BinderUpload() {
                   </p>
                   {card.prices?.eur != null && (
                     <p className="text-xs text-gray-600">€{card.prices.eur.toFixed(2)}</p>
+                  )}
+                  {card.match && isSignedIn && (
+                    <button
+                      type="button"
+                      onClick={() => saveCard(card)}
+                      disabled={saved[card.index]}
+                      className="mt-1 w-full rounded bg-blue-600 px-2 py-1 text-xs font-semibold text-white hover:bg-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:bg-gray-200 disabled:text-gray-500"
+                    >
+                      {saved[card.index] ? t('saved') : t('save')}
+                    </button>
                   )}
                 </div>
               </li>

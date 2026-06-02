@@ -8,6 +8,9 @@ const ja: Messages = {
   nav: {
     language: '言語'
   },
+  auth: {
+    signIn: 'ログイン'
+  },
   scan: {
     heading: 'バインダーページをスキャン',
     help: '9枚のカードが並んだバインダーページの写真をアップロードして、カードごとに分割します。',
@@ -20,13 +23,16 @@ const ja: Messages = {
     detected: '検出されたカード（{count}）',
     unrecognized: '未認識',
     altScanned: 'スキャンしたカード: {name}',
-    altUnrecognized: '未認識のカード {index}'
+    altUnrecognized: '未認識のカード {index}',
+    save: '保存',
+    saved: '保存済み'
   },
   saved: {
     heading: '保存したカード',
     empty: 'まだ保存されたカードはありません。',
     loading: '読み込み中…',
-    error: '保存したカードを読み込めませんでした。バックエンドは起動していますか？'
+    error: '保存したカードを読み込めませんでした。バックエンドは起動していますか？',
+    signInPrompt: 'コレクションを見るにはログインしてください。'
   }
 }
 

@@ -8,6 +8,9 @@ const lt: Messages = {
   nav: {
     language: 'Kalba'
   },
+  auth: {
+    signIn: 'Prisijungti'
+  },
   scan: {
     heading: 'Nuskenuoti segtuvo puslapį',
     help: 'Įkelkite 9 kortelių segtuvo puslapio nuotrauką, kad padalytumėte ją į korteles.',
@@ -20,13 +23,16 @@ const lt: Messages = {
     detected: 'Aptiktos kortelės ({count})',
     unrecognized: 'Neatpažinta',
     altScanned: 'Nuskenuota kortelė: {name}',
-    altUnrecognized: 'Neatpažinta kortelė {index}'
+    altUnrecognized: 'Neatpažinta kortelė {index}',
+    save: 'Išsaugoti',
+    saved: 'Išsaugota'
   },
   saved: {
     heading: 'Išsaugotos kortelės',
     empty: 'Kol kas nėra išsaugotų kortelių.',
     loading: 'Įkeliama…',
-    error: 'Nepavyko įkelti išsaugotų kortelių. Ar veikia backend’as?'
+    error: 'Nepavyko įkelti išsaugotų kortelių. Ar veikia backend’as?',
+    signInPrompt: 'Prisijunkite, kad pamatytumėte savo kolekciją.'
   }
 }
 

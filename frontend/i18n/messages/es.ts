@@ -8,6 +8,9 @@ const es: Messages = {
   nav: {
     language: 'Idioma'
   },
+  auth: {
+    signIn: 'Iniciar sesión'
+  },
   scan: {
     heading: 'Escanear una página de archivador',
     help: 'Sube una foto de una página de archivador de 9 cartas para dividirla en cartas.',
@@ -20,13 +23,16 @@ const es: Messages = {
     detected: 'Cartas detectadas ({count})',
     unrecognized: 'No reconocida',
     altScanned: 'Carta escaneada: {name}',
-    altUnrecognized: 'Carta no reconocida {index}'
+    altUnrecognized: 'Carta no reconocida {index}',
+    save: 'Guardar',
+    saved: 'Guardado'
   },
   saved: {
     heading: 'Cartas guardadas',
     empty: 'Aún no hay cartas guardadas.',
     loading: 'Cargando…',
-    error: 'No se pudieron cargar las cartas guardadas. ¿Está el backend en marcha?'
+    error: 'No se pudieron cargar las cartas guardadas. ¿Está el backend en marcha?',
+    signInPrompt: 'Inicia sesión para ver tu colección.'
   }
 }
 

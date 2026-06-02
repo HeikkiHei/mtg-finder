@@ -8,6 +8,9 @@ const lv: Messages = {
   nav: {
     language: 'Valoda'
   },
+  auth: {
+    signIn: 'Pieslēgties'
+  },
   scan: {
     heading: 'Skenēt mapes lapu',
     help: 'Augšupielādējiet 9 kāršu mapes lapas fotoattēlu, lai sadalītu to kārtīs.',
@@ -20,13 +23,16 @@ const lv: Messages = {
     detected: 'Atrastās kārtis ({count})',
     unrecognized: 'Neatpazīta',
     altScanned: 'Skenēta kārts: {name}',
-    altUnrecognized: 'Neatpazīta kārts {index}'
+    altUnrecognized: 'Neatpazīta kārts {index}',
+    save: 'Saglabāt',
+    saved: 'Saglabāts'
   },
   saved: {
     heading: 'Saglabātās kārtis',
     empty: 'Vēl nav saglabātu kāršu.',
     loading: 'Ielādē…',
-    error: 'Neizdevās ielādēt saglabātās kārtis. Vai backend darbojas?'
+    error: 'Neizdevās ielādēt saglabātās kārtis. Vai backend darbojas?',
+    signInPrompt: 'Piesakieties, lai redzētu savu kolekciju.'
   }
 }
 

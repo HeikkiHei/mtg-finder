@@ -8,6 +8,9 @@ const it: Messages = {
   nav: {
     language: 'Lingua'
   },
+  auth: {
+    signIn: 'Accedi'
+  },
   scan: {
     heading: 'Scansiona una pagina del raccoglitore',
     help: 'Carica una foto di una pagina del raccoglitore con 9 carte per dividerla in carte.',
@@ -20,13 +23,16 @@ const it: Messages = {
     detected: 'Carte rilevate ({count})',
     unrecognized: 'Non riconosciuta',
     altScanned: 'Carta scansionata: {name}',
-    altUnrecognized: 'Carta non riconosciuta {index}'
+    altUnrecognized: 'Carta non riconosciuta {index}',
+    save: 'Salva',
+    saved: 'Salvato'
   },
   saved: {
     heading: 'Carte salvate',
     empty: 'Ancora nessuna carta salvata.',
     loading: 'Caricamento…',
-    error: 'Impossibile caricare le carte salvate. Il backend è in esecuzione?'
+    error: 'Impossibile caricare le carte salvate. Il backend è in esecuzione?',
+    signInPrompt: 'Accedi per vedere la tua collezione.'
   }
 }
 

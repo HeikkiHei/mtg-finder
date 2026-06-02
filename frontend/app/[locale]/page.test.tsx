@@ -28,15 +28,18 @@ describe('Home', () => {
     expect(screen.getByRole('heading', { name: /scan a binder page/i })).toBeInTheDocument()
   })
 
-  it('renders saved cards returned by the API', async () => {
+  it('renders the signed-in user’s saved cards (with the auth token)', async () => {
     fetchMock.mockResolvedValue({
       ok: true,
-      json: async () => [{ id: 1, name: 'Sol Ring', type: 'Artifact', rarity: 'uncommon' }]
+      json: async () => [{ _id: '1', name: 'Sol Ring', set: 'cmr', eur: 1.5 }]
     })
     renderWithIntl(<Home />)
 
-    expect(await screen.findByText(/Sol Ring - Artifact \(uncommon\)/)).toBeInTheDocument()
-    expect(fetchMock).toHaveBeenCalledWith('/api/cards')
+    expect(await screen.findByText('Sol Ring (CMR)')).toBeInTheDocument()
+    expect(screen.getByText('€1.50')).toBeInTheDocument()
+    expect(fetchMock).toHaveBeenCalledWith('/api/cards', {
+      headers: { Authorization: 'Bearer test-token' }
+    })
   })
 
   it('shows an error message when the cards request fails', async () => {

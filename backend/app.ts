@@ -1,7 +1,7 @@
+import { clerkMiddleware, getAuth, requireAuth } from '@clerk/express'
 import cors from 'cors'
 import express, { Request, Response } from 'express'
 import multer from 'multer'
-import Card from './cards/card'
 import { collections } from './db'
 import { splitBinderPage } from './imaging/binder'
 import { getCardPrices, type CardPrices } from './pricing/pricing'
@@ -27,6 +27,11 @@ function getIndex(): Promise<HashEntry[]> {
 export const app = express()
 
 app.use(cors()) // Enable CORS
+app.use(express.json()) // Parse JSON request bodies (used by POST /api/cards)
+// Attach Clerk auth context to every request (does not require auth on its own;
+// individual routes opt in with requireAuth()). Reads CLERK_SECRET_KEY and
+// CLERK_PUBLISHABLE_KEY from the environment.
+app.use(clerkMiddleware())
 
 // Hold the uploaded binder page in memory; we process it immediately and don't
 // need it on disk. Limit to a single 25MB image per request.
@@ -84,16 +89,52 @@ app.post('/api/scan/process', upload.single('image'), async (req: Request, res: 
   }
 })
 
-app.get('/api/cards', async (_req: Request, res: Response) => {
-  try {
-    const cards = (await collections.cards!.find({}).toArray()) as Card[]
+// A card saved to the signed-in user's collection.
+interface SavedCard {
+  userId: string
+  scryfallId: string | null
+  name: string
+  set: string | null
+  eur: number | null
+  createdAt: Date
+}
 
-    res.status(200).send(cards) // Send the cards as JSON
+// Return only the signed-in user's saved cards.
+app.get('/api/cards', requireAuth(), async (req: Request, res: Response) => {
+  try {
+    const { userId } = getAuth(req)
+    const cards = await collections.cards!.find({ userId }).toArray()
+    res.status(200).send(cards)
   } catch (error) {
-    if (error instanceof Error) {
-      res.status(500).send(error.message)
-    } else {
-      res.status(500).send('An unknown error occurred')
+    const message = error instanceof Error ? error.message : 'An unknown error occurred'
+    res.status(500).send(message)
+  }
+})
+
+// Save a card to the signed-in user's collection.
+app.post('/api/cards', requireAuth(), async (req: Request, res: Response) => {
+  try {
+    const { userId } = getAuth(req)
+    const { scryfallId, name, set, eur } = req.body ?? {}
+
+    if (typeof name !== 'string' || name.length === 0) {
+      res.status(400).send("'name' is required")
+      return
     }
+
+    const card: SavedCard = {
+      userId: userId!,
+      scryfallId: typeof scryfallId === 'string' ? scryfallId : null,
+      name,
+      set: typeof set === 'string' ? set : null,
+      eur: typeof eur === 'number' ? eur : null,
+      createdAt: new Date()
+    }
+
+    const result = await collections.cards!.insertOne(card)
+    res.status(201).send({ _id: result.insertedId, ...card })
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'An unknown error occurred'
+    res.status(500).send(message)
   }
 })

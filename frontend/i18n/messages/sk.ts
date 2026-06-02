@@ -8,6 +8,9 @@ const sk: Messages = {
   nav: {
     language: 'Jazyk'
   },
+  auth: {
+    signIn: 'Prihlásiť sa'
+  },
   scan: {
     heading: 'Naskenovať stranu albumu',
     help: 'Nahrajte fotku strany albumu s 9 kartami, aby ste ju rozdelili na karty.',
@@ -20,13 +23,16 @@ const sk: Messages = {
     detected: 'Rozpoznané karty ({count})',
     unrecognized: 'Nerozpoznané',
     altScanned: 'Naskenovaná karta: {name}',
-    altUnrecognized: 'Nerozpoznaná karta {index}'
+    altUnrecognized: 'Nerozpoznaná karta {index}',
+    save: 'Uložiť',
+    saved: 'Uložené'
   },
   saved: {
     heading: 'Uložené karty',
     empty: 'Zatiaľ žiadne uložené karty.',
     loading: 'Načítava sa…',
-    error: 'Uložené karty sa nepodarilo načítať. Beží backend?'
+    error: 'Uložené karty sa nepodarilo načítať. Beží backend?',
+    signInPrompt: 'Prihláste sa, aby ste videli svoju zbierku.'
   }
 }
 

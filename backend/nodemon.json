@@ -1,0 +1,5 @@
+{
+  "watch": [".", ".env"],
+  "ext": "ts,json,env",
+  "ignore": ["dist/**", "node_modules/**", "**/*.test.ts"]
+}

@@ -28,12 +28,26 @@ interface CardCrop {
   prices: CardPrices | null
 }
 
+interface BinderGrid {
+  rows: number
+  cols: number
+}
+
+// Every rows×cols layout from a single card up to a 4×4 page (16 slots — a
+// 15-card booster pack laid out with one slot empty still fits).
+const AXES = [1, 2, 3, 4]
+const LAYOUT_OPTIONS = AXES.flatMap(rows => AXES.map(cols => ({ rows, cols })))
+// The standard nine-pocket binder page, used as the default.
+const DEFAULT_LAYOUT = '3x3'
+
 export default function BinderUpload() {
   const t = useTranslations('scan')
   const { isSignedIn, getToken } = useAuth()
   const [file, setFile] = useState<File | null>(null)
   const [preview, setPreview] = useState<string | null>(null)
+  const [layout, setLayout] = useState(DEFAULT_LAYOUT)
   const [cards, setCards] = useState<CardCrop[] | null>(null)
+  const [grid, setGrid] = useState<BinderGrid | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [saved, setSaved] = useState<Record<number, boolean>>({})
@@ -42,6 +56,7 @@ export default function BinderUpload() {
     const selected = event.target.files?.[0] ?? null
     setFile(selected)
     setCards(null)
+    setGrid(null)
     setError(null)
     setPreview(selected ? URL.createObjectURL(selected) : null)
   }
@@ -73,10 +88,14 @@ export default function BinderUpload() {
     setLoading(true)
     setError(null)
     setCards(null)
+    setGrid(null)
 
     try {
       const formData = new FormData()
       formData.append('image', file)
+      const [rows, cols] = layout.split('x')
+      formData.append('rows', rows)
+      formData.append('cols', cols)
 
       const token = await getToken()
       const response = await fetch('/api/scan/process', {
@@ -91,6 +110,7 @@ export default function BinderUpload() {
 
       const data = await response.json()
       setCards(data.cards)
+      setGrid(data.grid ?? null)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to process image')
     } finally {
@@ -133,6 +153,24 @@ export default function BinderUpload() {
         />
       </div>
 
+      <div className="mt-4">
+        <label htmlFor="binder-layout" className="block text-sm font-medium text-gray-900">
+          {t('gridLabel')}
+        </label>
+        <select
+          id="binder-layout"
+          value={layout}
+          onChange={event => setLayout(event.target.value)}
+          className="mt-2 block w-full rounded-md border border-gray-300 px-3 py-2.5 text-sm text-gray-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 sm:w-auto"
+        >
+          {LAYOUT_OPTIONS.map(({ rows, cols }) => (
+            <option key={`${rows}x${cols}`} value={`${rows}x${cols}`}>
+              {rows}×{cols}
+            </option>
+          ))}
+        </select>
+      </div>
+
       <button
         type="button"
         onClick={handleProcess}
@@ -165,7 +203,14 @@ export default function BinderUpload() {
 
       {cards && (
         <div className="mt-6">
-          <h3 className="text-base font-semibold">{t('detected', { count: cards.length })}</h3>
+          <div className="flex items-baseline justify-between gap-2">
+            <h3 className="text-base font-semibold">{t('detected', { count: cards.length })}</h3>
+            {grid && (
+              <span className="text-sm text-gray-500">
+                {t('gridUsed', { rows: grid.rows, cols: grid.cols })}
+              </span>
+            )}
+          </div>
           <ul role="list" className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
             {cards.map(card => (
               <li

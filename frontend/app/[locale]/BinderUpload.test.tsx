@@ -175,6 +175,39 @@ describe('BinderUpload', () => {
     expect(await screen.findByRole('button', { name: /^saved$/i })).toBeInTheDocument()
   })
 
+  it('defaults the layout to 3×3 and sends the chosen grid when processing', async () => {
+    fetchMock.mockResolvedValue(recognizedScan)
+    const user = userEvent.setup()
+    const { container } = renderWithIntl(<BinderUpload />)
+
+    const layout = screen.getByLabelText(/grid layout/i) as HTMLSelectElement
+    expect(layout.value).toBe('3x3')
+
+    await user.selectOptions(layout, '4x4')
+    await user.upload(fileInput(container), pngFile())
+    await user.click(screen.getByRole('button', { name: /process/i }))
+
+    await waitFor(() => expect(fetchMock).toHaveBeenCalled())
+    const scanCall = fetchMock.mock.calls.find(([url]) => url === '/api/scan/process')
+    const body = scanCall![1].body as FormData
+    expect(body.get('rows')).toBe('4')
+    expect(body.get('cols')).toBe('4')
+  })
+
+  it('shows the layout returned by the server alongside the count', async () => {
+    fetchMock.mockResolvedValue({
+      ok: true,
+      json: async () => ({ grid: { rows: 3, cols: 3 }, cards: (await recognizedScan.json()).cards })
+    })
+    const user = userEvent.setup()
+    const { container } = renderWithIntl(<BinderUpload />)
+
+    await user.upload(fileInput(container), pngFile())
+    await user.click(screen.getByRole('button', { name: /process/i }))
+
+    expect(await screen.findByText(/layout: 3×3/i)).toBeInTheDocument()
+  })
+
   it('does not offer a Save action when signed out', async () => {
     mockUseAuth.mockReturnValue({ isLoaded: true, isSignedIn: false, getToken: async () => null })
     fetchMock.mockResolvedValue(recognizedScan)

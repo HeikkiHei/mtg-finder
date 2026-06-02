@@ -191,6 +191,17 @@ describe('BinderUpload', () => {
     expect(URL.revokeObjectURL).toHaveBeenCalledWith('blob:preview-0')
   })
 
+  it('revokes the preview URL when the component unmounts', async () => {
+    const user = userEvent.setup()
+    const { container, unmount } = renderWithIntl(<BinderUpload />)
+
+    await user.upload(fileInput(container), pngFile())
+    expect(URL.revokeObjectURL).not.toHaveBeenCalled()
+
+    unmount()
+    expect(URL.revokeObjectURL).toHaveBeenCalledWith('blob:preview-0')
+  })
+
   it('clears the saved state when processing again', async () => {
     fetchMock.mockImplementation((url: string) =>
       url === '/api/cards'

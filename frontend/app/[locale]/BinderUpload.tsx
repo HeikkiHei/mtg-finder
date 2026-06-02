@@ -2,7 +2,7 @@
 
 import { useAuth } from '@clerk/nextjs'
 import { useTranslations } from 'next-intl'
-import { useState, type ChangeEvent } from 'react'
+import { useEffect, useState, type ChangeEvent } from 'react'
 
 interface CardMatch {
   scryfallId: string
@@ -52,6 +52,13 @@ export default function BinderUpload() {
   const [error, setError] = useState<string | null>(null)
   const [saved, setSaved] = useState<Record<number, boolean>>({})
 
+  // Release each object-URL preview when it's replaced or the component
+  // unmounts, so blobs don't leak across selections or on navigation away.
+  useEffect(() => {
+    if (!preview) return
+    return () => URL.revokeObjectURL(preview)
+  }, [preview])
+
   const handleSelect = (event: ChangeEvent<HTMLInputElement>) => {
     const selected = event.target.files?.[0] ?? null
     setFile(selected)
@@ -59,12 +66,7 @@ export default function BinderUpload() {
     setGrid(null)
     setError(null)
     setSaved({})
-    // Release the previous object URL before replacing it so repeated picks
-    // don't leak blobs.
-    setPreview(previous => {
-      if (previous) URL.revokeObjectURL(previous)
-      return selected ? URL.createObjectURL(selected) : null
-    })
+    setPreview(selected ? URL.createObjectURL(selected) : null)
   }
 
   const saveCard = async (card: CardCrop) => {

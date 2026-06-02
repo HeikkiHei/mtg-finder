@@ -2,7 +2,7 @@
 
 import { useAuth } from '@clerk/nextjs'
 import { useTranslations } from 'next-intl'
-import { useState, type ChangeEvent } from 'react'
+import { useEffect, useState, type ChangeEvent } from 'react'
 
 interface CardMatch {
   scryfallId: string
@@ -28,21 +28,44 @@ interface CardCrop {
   prices: CardPrices | null
 }
 
+interface BinderGrid {
+  rows: number
+  cols: number
+}
+
+// Every rows×cols layout from a single card up to a 4×4 page (16 slots — a
+// 15-card booster pack laid out with one slot empty still fits).
+const AXES = [1, 2, 3, 4]
+const LAYOUT_OPTIONS = AXES.flatMap(rows => AXES.map(cols => ({ rows, cols })))
+// The standard nine-pocket binder page, used as the default.
+const DEFAULT_LAYOUT = '3x3'
+
 export default function BinderUpload() {
   const t = useTranslations('scan')
   const { isSignedIn, getToken } = useAuth()
   const [file, setFile] = useState<File | null>(null)
   const [preview, setPreview] = useState<string | null>(null)
+  const [layout, setLayout] = useState(DEFAULT_LAYOUT)
   const [cards, setCards] = useState<CardCrop[] | null>(null)
+  const [grid, setGrid] = useState<BinderGrid | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [saved, setSaved] = useState<Record<number, boolean>>({})
+
+  // Release each object-URL preview when it's replaced or the component
+  // unmounts, so blobs don't leak across selections or on navigation away.
+  useEffect(() => {
+    if (!preview) return
+    return () => URL.revokeObjectURL(preview)
+  }, [preview])
 
   const handleSelect = (event: ChangeEvent<HTMLInputElement>) => {
     const selected = event.target.files?.[0] ?? null
     setFile(selected)
     setCards(null)
+    setGrid(null)
     setError(null)
+    setSaved({})
     setPreview(selected ? URL.createObjectURL(selected) : null)
   }
 
@@ -73,10 +96,15 @@ export default function BinderUpload() {
     setLoading(true)
     setError(null)
     setCards(null)
+    setGrid(null)
+    setSaved({})
 
     try {
       const formData = new FormData()
       formData.append('image', file)
+      const [rows, cols] = layout.split('x')
+      formData.append('rows', rows)
+      formData.append('cols', cols)
 
       const token = await getToken()
       const response = await fetch('/api/scan/process', {
@@ -91,12 +119,19 @@ export default function BinderUpload() {
 
       const data = await response.json()
       setCards(data.cards)
+      setGrid(data.grid ?? null)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to process image')
     } finally {
       setLoading(false)
     }
   }
+
+  // Only positively identified cards count; backs and anything we can't match
+  // are shown separately and excluded from the total.
+  const recognized =
+    cards?.filter((card): card is CardCrop & { match: CardMatch } => card.match !== null) ?? []
+  const unrecognized = cards?.filter(card => card.match === null) ?? []
 
   return (
     <section
@@ -115,7 +150,7 @@ export default function BinderUpload() {
         {loading
           ? t('statusProcessing')
           : cards
-            ? t('statusDetected', { count: cards.length })
+            ? t('statusDetected', { count: recognized.length })
             : ''}
       </p>
 
@@ -131,6 +166,24 @@ export default function BinderUpload() {
           aria-describedby="scan-help"
           className="mt-2 block w-full cursor-pointer rounded-md border border-gray-300 text-sm text-gray-700 file:mr-4 file:cursor-pointer file:border-0 file:bg-blue-600 file:px-4 file:py-2.5 file:font-semibold file:text-white hover:file:bg-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
         />
+      </div>
+
+      <div className="mt-4">
+        <label htmlFor="binder-layout" className="block text-sm font-medium text-gray-900">
+          {t('gridLabel')}
+        </label>
+        <select
+          id="binder-layout"
+          value={layout}
+          onChange={event => setLayout(event.target.value)}
+          className="mt-2 block w-full rounded-md border border-gray-300 px-3 py-2.5 text-sm text-gray-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 sm:w-auto"
+        >
+          {LAYOUT_OPTIONS.map(({ rows, cols }) => (
+            <option key={`${rows}x${cols}`} value={`${rows}x${cols}`}>
+              {rows}×{cols}
+            </option>
+          ))}
+        </select>
       </div>
 
       <button
@@ -165,52 +218,76 @@ export default function BinderUpload() {
 
       {cards && (
         <div className="mt-6">
-          <h3 className="text-base font-semibold">{t('detected', { count: cards.length })}</h3>
-          <ul role="list" className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
-            {cards.map(card => (
-              <li
-                key={card.index}
-                className="overflow-hidden rounded-lg border border-gray-200 bg-white"
-              >
-                <img
-                  src={card.image}
-                  alt={
-                    card.match
-                      ? t('altScanned', { name: card.match.name })
-                      : t('altUnrecognized', { index: card.index + 1 })
-                  }
-                  className="aspect-63/88 w-full bg-gray-100 object-contain"
-                />
-                <div className="space-y-0.5 p-2 text-center">
-                  <p
-                    className="truncate text-xs font-medium"
-                    title={
-                      card.match
-                        ? `${card.match.name} (${card.match.set.toUpperCase()})`
-                        : t('unrecognized')
-                    }
-                  >
-                    {card.match
-                      ? `${card.match.name} (${card.match.set.toUpperCase()})`
-                      : t('unrecognized')}
-                  </p>
-                  {card.prices?.eur != null && (
-                    <p className="text-xs text-gray-600">€{card.prices.eur.toFixed(2)}</p>
-                  )}
-                  {card.match && isSignedIn && (
-                    <button
-                      type="button"
-                      onClick={() => saveCard(card)}
-                      disabled={saved[card.index]}
-                      className="mt-1 w-full rounded bg-blue-600 px-2 py-1 text-xs font-semibold text-white hover:bg-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:bg-gray-200 disabled:text-gray-500"
+          <div className="flex items-baseline justify-between gap-2">
+            <h3 className="text-base font-semibold">
+              {t('detected', { count: recognized.length })}
+            </h3>
+            {grid && (
+              <span className="text-sm text-gray-500">
+                {t('gridUsed', { rows: grid.rows, cols: grid.cols })}
+              </span>
+            )}
+          </div>
+          {recognized.length > 0 && (
+            <ul role="list" className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
+              {recognized.map(card => (
+                <li
+                  key={card.index}
+                  className="overflow-hidden rounded-lg border border-gray-200 bg-white"
+                >
+                  <img
+                    src={card.image}
+                    alt={t('altScanned', { name: card.match.name })}
+                    className="aspect-63/88 w-full bg-gray-100 object-contain"
+                  />
+                  <div className="space-y-0.5 p-2 text-center">
+                    <p
+                      className="truncate text-xs font-medium"
+                      title={`${card.match.name} (${card.match.set.toUpperCase()})`}
                     >
-                      {saved[card.index] ? t('saved') : t('save')}
-                    </button>
-                  )}
-                </div>
-              </li>
-            ))}
-          </ul>
+                      {`${card.match.name} (${card.match.set.toUpperCase()})`}
+                    </p>
+                    {card.prices?.eur != null && (
+                      <p className="text-xs text-gray-600">€{card.prices.eur.toFixed(2)}</p>
+                    )}
+                    {isSignedIn && (
+                      <button
+                        type="button"
+                        onClick={() => saveCard(card)}
+                        disabled={saved[card.index]}
+                        className="mt-1 w-full rounded bg-blue-600 px-2 py-1 text-xs font-semibold text-white hover:bg-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:bg-gray-200 disabled:text-gray-500"
+                      >
+                        {saved[card.index] ? t('saved') : t('save')}
+                      </button>
+                    )}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {unrecognized.length > 0 && (
+            <div className="mt-6">
+              <h4 className="text-sm font-semibold text-gray-700">
+                {t('unidentified', { count: unrecognized.length })}
+              </h4>
+              <ul role="list" className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
+                {unrecognized.map(card => (
+                  <li
+                    key={card.index}
+                    className="overflow-hidden rounded-lg border border-gray-200 bg-white opacity-80"
+                  >
+                    <img
+                      src={card.image}
+                      alt={t('altUnrecognized', { index: card.index + 1 })}
+                      className="aspect-63/88 w-full bg-gray-100 object-contain"
+                    />
+                    <p className="p-2 text-center text-xs text-gray-500">{t('unrecognized')}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       )}
     </section>

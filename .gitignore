@@ -147,3 +147,6 @@ dist
 
 # Generated perceptual-hash recognition index (derived from Scryfall)
 backend/recognition/data/
+
+# Local sample binder photos for manual scan testing (large; not used by tests)
+frontend/__mocks__/examples/

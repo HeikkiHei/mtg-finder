@@ -2,8 +2,9 @@ import js from '@eslint/js'
 import globals from 'globals'
 import tseslint from 'typescript-eslint'
 
-// Flat config (ESLint 10). Formatting is owned by Prettier, so this only
-// carries code-quality rules: ESLint + typescript-eslint recommended.
+// Flat config (ESLint 10, loaded as TypeScript via jiti). Formatting is owned
+// by Prettier, so this only carries code-quality rules: ESLint +
+// typescript-eslint recommended.
 export default tseslint.config(
   {
     ignores: [

@@ -1,9 +1,9 @@
 import sharp from 'sharp'
-import { DEFAULT_MAX_DISTANCE, recognize } from './matcher'
-import { computeDHash } from './phash'
+import { recognize } from './matcher'
+import { computePhash } from './phash'
 import type { HashEntry } from './store'
 
-/** A deterministic noisy image so its dHash is varied (not all-0s/all-1s). */
+/** A deterministic noisy image so its pHash is varied and distinct per seed. */
 async function patterned(seed: number, w = 64, h = 64) {
   const raw = Buffer.alloc(w * h * 3)
   let s = seed
@@ -31,32 +31,49 @@ function entry(id: string, hash: string): HashEntry {
   }
 }
 
+// A populated index of distinct cards (seeds 1..count) so the outlier
+// statistic is meaningful.
+async function buildIndex(count: number): Promise<HashEntry[]> {
+  const entries: HashEntry[] = []
+  for (let seed = 1; seed <= count; seed++) {
+    entries.push(entry(`card-${seed}`, await computePhash(await patterned(seed))))
+  }
+  return entries
+}
+
 describe('recognize', () => {
+  let index: HashEntry[]
+  beforeAll(async () => {
+    index = await buildIndex(40)
+  })
+
   it('returns null for an empty index', async () => {
-    expect(await recognize(await patterned(1), [])).toBeNull()
+    expect(await recognize(await patterned(5), [])).toBeNull()
   })
 
-  it('matches the nearest entry within the distance threshold', async () => {
-    const image = await patterned(1)
-    const hash = await computeDHash(image)
-    const match = await recognize(image, [entry('far', 'aaaaaaaaaaaaaaaa'), entry('exact', hash)])
-    expect(match?.scryfallId).toBe('exact')
+  it('recognises a card that stands out as a clear outlier', async () => {
+    const match = await recognize(await patterned(5), index)
+    expect(match?.scryfallId).toBe('card-5')
     expect(match?.distance).toBe(0)
-  })
-
-  it('returns null when nothing is within maxDistance', async () => {
-    const image = await patterned(1)
-    const hash = await computeDHash(image)
-    // Flip 5 low bits so the only entry sits at distance 5.
-    const near = (BigInt(`0x${hash}`) ^ 0b11111n).toString(16).padStart(16, '0')
-    expect(await recognize(image, [entry('near', near)], 3)).toBeNull()
+    expect(match?.score).toBeGreaterThan(4)
   })
 
   it('matches a card slotted upside-down (180° rotation)', async () => {
-    const image = await patterned(7)
-    const upsideDown = await sharp(image).rotate(180).toBuffer()
-    const match = await recognize(upsideDown, [entry('card', await computeDHash(image))])
-    expect(match?.scryfallId).toBe('card')
-    expect(match?.distance).toBeLessThanOrEqual(DEFAULT_MAX_DISTANCE)
+    const upsideDown = await sharp(await patterned(7))
+      .rotate(180)
+      .toBuffer()
+    const match = await recognize(upsideDown, index)
+    expect(match?.scryfallId).toBe('card-7')
+  })
+
+  it('returns null when no card stands out (not in the index)', async () => {
+    // Seed 9999 isn't indexed, so nothing is a meaningful outlier.
+    expect(await recognize(await patterned(9999), index)).toBeNull()
+  })
+
+  it('declines to guess from too small an index', async () => {
+    const tiny = index.slice(0, 4)
+    // Even with the exact card present, the statistic is too noisy to trust.
+    expect(await recognize(await patterned(1), tiny)).toBeNull()
   })
 })

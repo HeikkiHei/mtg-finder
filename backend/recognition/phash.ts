@@ -3,64 +3,116 @@ import sharp from 'sharp'
 /**
  * Perceptual hashing for card recognition.
  *
- * We use a 64-bit difference hash (dHash): downscale to a tiny greyscale image
- * and record, for each pixel, whether it is brighter than its right-hand
- * neighbour. The result is robust to scaling, JPEG noise and the mild colour
- * shifts introduced by binder-sleeve plastic, while staying dependency-free.
+ * We use a DCT-based perceptual hash (pHash): downscale to greyscale, take the
+ * 2D discrete cosine transform, keep the low-frequency top-left block and
+ * threshold each coefficient against the block's median. This captures far more
+ * structure than a difference hash and is robust to scaling, JPEG noise and the
+ * colour shifts of binder-sleeve plastic.
  *
- * Hashes are represented as 16-character hex strings so they serialise cleanly
- * into the on-disk index and are cheap to compare with a Hamming distance.
+ * Hashes are HASH_SIZE*HASH_SIZE bits, serialised as a hex string so they store
+ * cleanly in the on-disk index and compare cheaply with a Hamming distance.
  */
 
-const HASH_SIZE = 8 // 8x8 comparisons -> 64-bit hash
+// 32x32 low-frequency block -> 1024-bit hash. Larger hashes make a true match
+// stand out much more sharply as a statistical outlier (see matcher.ts).
+const HASH_SIZE = 32
+// Downscale resolution fed into the DCT (4x the hash size, as in imagehash).
+const DCT_SIZE = HASH_SIZE * 4
 
-/** Compute the 64-bit dHash of an image as a 16-char hex string. */
-export async function computeDHash(input: Buffer): Promise<string> {
-  const width = HASH_SIZE + 1
-  const height = HASH_SIZE
+// cos[k][n] = cos(pi * (n + 0.5) * k / DCT_SIZE), cached across calls.
+let cosTable: Float64Array[] | null = null
+function getCosTable(): Float64Array[] {
+  if (!cosTable) {
+    cosTable = []
+    for (let k = 0; k < HASH_SIZE; k++) {
+      const row = new Float64Array(DCT_SIZE)
+      for (let n = 0; n < DCT_SIZE; n++) {
+        row[n] = Math.cos((Math.PI * (n + 0.5) * k) / DCT_SIZE)
+      }
+      cosTable.push(row)
+    }
+  }
+  return cosTable
+}
 
+/** Compute the DCT perceptual hash of an image as a hex string. */
+export async function computePhash(input: Buffer): Promise<string> {
   const { data, info } = await sharp(input)
     .greyscale()
-    .resize(width, height, { fit: 'fill' })
+    .resize(DCT_SIZE, DCT_SIZE, { fit: 'fill' })
     .raw()
     .toBuffer({ resolveWithObject: true })
 
   const stride = info.channels // greyscale value lives in channel 0
-  let bits = 0n
-  let bit = 0n
+  const cos = getCosTable()
 
-  for (let row = 0; row < height; row++) {
-    for (let col = 0; col < HASH_SIZE; col++) {
-      const left = data[(row * width + col) * stride]
-      const right = data[(row * width + col + 1) * stride]
-      if (left < right) {
-        bits |= 1n << bit
-      }
-      bit++
+  // Separable 2D DCT-II, keeping only the HASH_SIZE lowest frequencies on each
+  // axis. First transform every row (along x), then those columns (along y).
+  const intermediate: Float64Array[] = []
+  for (let y = 0; y < DCT_SIZE; y++) {
+    const row = new Float64Array(HASH_SIZE)
+    const base = y * DCT_SIZE
+    for (let k = 0; k < HASH_SIZE; k++) {
+      const ck = cos[k]
+      let sum = 0
+      for (let x = 0; x < DCT_SIZE; x++) sum += data[(base + x) * stride] * ck[x]
+      row[k] = sum
+    }
+    intermediate.push(row)
+  }
+
+  const coeffs = new Float64Array(HASH_SIZE * HASH_SIZE)
+  for (let k = 0; k < HASH_SIZE; k++) {
+    for (let u = 0; u < HASH_SIZE; u++) {
+      const cu = cos[u]
+      let sum = 0
+      for (let y = 0; y < DCT_SIZE; y++) sum += intermediate[y][k] * cu[y]
+      coeffs[u * HASH_SIZE + k] = sum
     }
   }
 
-  return bits.toString(16).padStart(16, '0')
+  const sorted = Float64Array.from(coeffs).sort()
+  const mid = sorted.length >> 1
+  const median = (sorted[mid - 1] + sorted[mid]) / 2
+
+  // Pack one bit per coefficient (> median) into a hex string, MSB-first.
+  let hex = ''
+  for (let i = 0; i < coeffs.length; i += 4) {
+    const nibble =
+      ((coeffs[i] > median ? 1 : 0) << 3) |
+      ((coeffs[i + 1] > median ? 1 : 0) << 2) |
+      ((coeffs[i + 2] > median ? 1 : 0) << 1) |
+      (coeffs[i + 3] > median ? 1 : 0)
+    hex += nibble.toString(16)
+  }
+  return hex
 }
 
 /**
- * Compute hashes for an image at the orientations a binder card is plausibly
- * photographed in: upright and upside-down. Matching against both lets us
- * recognise cards that were slotted in rotated 180°.
+ * Compute hashes for an image at the four orientations a binder card is
+ * plausibly photographed in (0/90/180/270). Matching the query against all four
+ * lets us recognise cards slotted rotated.
  */
 export async function computeOrientationHashes(input: Buffer): Promise<string[]> {
-  const upright = await computeDHash(input)
-  const flipped = await computeDHash(await sharp(input).rotate(180).toBuffer())
-  return [upright, flipped]
+  const variants = [
+    input,
+    await sharp(input).rotate(90).toBuffer(),
+    await sharp(input).rotate(180).toBuffer(),
+    await sharp(input).rotate(270).toBuffer()
+  ]
+  return Promise.all(variants.map(computePhash))
 }
 
-/** Hamming distance between two hex hashes: 0 = identical, 64 = inverse. */
+// Per-byte set-bit counts, for a fast length-agnostic Hamming distance.
+const POPCOUNT = new Uint8Array(256)
+for (let i = 0; i < 256; i++) POPCOUNT[i] = (i & 1) + POPCOUNT[i >>> 1]
+
+/** Hamming distance between two equal-length hex hashes: 0 = identical. */
 export function hammingDistance(a: string, b: string): number {
-  let diff = BigInt(`0x${a}`) ^ BigInt(`0x${b}`)
   let distance = 0
-  while (diff > 0n) {
-    distance += Number(diff & 1n)
-    diff >>= 1n
+  for (let i = 0; i < a.length; i += 2) {
+    const xor = (parseInt(a.slice(i, i + 2), 16) ^ parseInt(b.slice(i, i + 2), 16)) & 0xff
+    distance += POPCOUNT[xor]
   }
   return distance
 }

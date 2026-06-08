@@ -57,7 +57,7 @@ describe('buildIndex', () => {
       name: 'Card A',
       imageUrl: 'http://x/a.png'
     })
-    expect(entries[0].hash).toMatch(/^[0-9a-f]{16}$/)
+    expect(entries[0].hash).toMatch(/^[0-9a-f]{256}$/)
     expect(mockedDownload).toHaveBeenCalledTimes(2)
     expect(await loadIndex(indexPath)).toEqual(entries)
   })

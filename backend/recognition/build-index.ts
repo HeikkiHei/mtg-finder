@@ -1,4 +1,4 @@
-import { computeDHash } from './phash'
+import { computePhash } from './phash'
 import { cardImageUrl, downloadImage, searchCards } from './scryfall'
 import { DEFAULT_INDEX_PATH, saveIndex, type HashEntry } from './store'
 
@@ -32,7 +32,7 @@ export async function buildIndex({
 
     try {
       const image = await downloadImage(imageUrl)
-      const hash = await computeDHash(image)
+      const hash = await computePhash(image)
       entries.push({
         scryfallId: card.id,
         name: card.name,

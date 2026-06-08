@@ -13,7 +13,7 @@ export interface HashEntry {
   collectorNumber: string
   lang: string
   imageUrl: string
-  /** 64-bit dHash as a 16-char hex string (see phash.ts). */
+  /** DCT perceptual hash as a hex string (see phash.ts). */
   hash: string
 }
 

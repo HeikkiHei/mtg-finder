@@ -5,7 +5,7 @@
   "dependencies": {
     "@clerk/express": "^2.1.32",
     "cors": "^2.8.6",
-    "dotenv": "^17.4.2",
+    "dotenv": "^18.0.7",
     "express": "^5.2.1",
     "multer": "^2.1.1",
     "sharp": "^0.35.2"
@@ -14,7 +14,6 @@
     "@types/express": "^5.0.6",
     "@types/multer": "^2.1.0",
     "@types/supertest": "^7.2.0",
-    "nodemon": "^3.1.14",
     "supertest": "^7.2.2",
     "ts-jest": "^29.4.11",
     "ts-node": "^10.9.2",
@@ -22,7 +21,7 @@
   },
   "scripts": {
     "start": "ts-node server.ts",
-    "dev": "nodemon server.ts",
+    "dev": "node --watch -r ts-node/register server.ts",
     "build:index": "ts-node recognition/build-index.ts",
     "test": "jest"
   }

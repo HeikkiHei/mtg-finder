@@ -42,14 +42,12 @@
   },
   "comments": {
     "overrides": {
-      "@types/multer": "Depends on @types/express@* which would resolve to the v4 types; pin to v5 so it matches the express-5 backend and doesn't reintroduce the removed `req.param` Request type.",
-      "postcss": "Next 16 still bundles postcss 8.4.31 (moderate XSS advisory GHSA-qx2v-qp2m-jg93). Pin to the patched 8.5.x — a same-major bump Next tolerates — instead of npm's absurd 'fix' of downgrading Next to 9.x. No --force/--legacy-peer-deps needed."
+      "@types/multer": "Depends on @types/express@* which would resolve to the v4 types; pin to v5 so it matches the express-5 backend and doesn't reintroduce the removed `req.param` Request type."
     }
   },
   "overrides": {
     "@types/multer": {
       "@types/express": "^5.0.6"
-    },
-    "postcss": "^8.5.15"
+    }
   }
 }
